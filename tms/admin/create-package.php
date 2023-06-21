@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
 	{	
@@ -12,14 +12,16 @@ if(isset($_POST['submit']))
 $pname=$_POST['packagename'];	
 $plocation=$_POST['packagelocation'];
 $pdetails=$_POST['packagedetails'];	
+$pcategory=$_POST['category'];
 $pimage=$_FILES["packageimage"]["name"];
 move_uploaded_file($_FILES["packageimage"]["tmp_name"],"pacakgeimages/".$_FILES["packageimage"]["name"]);
-$category=$_POST['category'];
-$sql="INSERT INTO tbltourpackages(PackageName,PackageLocation,PackageDetails,PackageImage) VALUES(:pname,:plocation,:pdetails,:pimage)";
+
+$sql="INSERT INTO tbltourpackages(PackageName,PackageLocation,PackageDetails,CategoryId,PackageImage) VALUES(:pname,:plocation,:pdetails,:pcategory,:pimage)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pname',$pname,PDO::PARAM_STR);
 $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
 $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
+$query->bindParam(':pcategory',$pdetails,PDO::PARAM_INT);
 $query->bindParam(':pimage',$pimage,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
@@ -106,7 +108,7 @@ $error="Something went wrong. Please try again";
 						<div class="tab-pane active" id="horizontal-form">
 							<form class="form-horizontal" name="package" method="post" enctype="multipart/form-data">
 								<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label"> Name</label>
+									<label for="focusedinput" class="col-sm-2 control-label">Name</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control1" name="packagename" id="packagename" placeholder="Create Package" required>
 									</div>
@@ -134,7 +136,9 @@ $error="Something went wrong. Please try again";
 									<select name="category">
                     <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['CategoryId']; ?>">
-                            <?php echo $category['CategoryName']; ?>
+                            <?php echo $category['CategoryName'];
+						  ?>
+							
                         </option>
                     <?php endforeach; ?>
                 </select>
