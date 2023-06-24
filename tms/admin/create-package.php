@@ -15,13 +15,12 @@ $pdetails=$_POST['packagedetails'];
 $pcategory=$_POST['category'];
 $pimage=$_FILES["packageimage"]["name"];
 move_uploaded_file($_FILES["packageimage"]["tmp_name"],"pacakgeimages/".$_FILES["packageimage"]["name"]);
-
 $sql="INSERT INTO tbltourpackages(PackageName,PackageLocation,PackageDetails,CategoryId,PackageImage) VALUES(:pname,:plocation,:pdetails,:pcategory,:pimage)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pname',$pname,PDO::PARAM_STR);
 $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
 $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
-$query->bindParam(':pcategory',$pdetails,PDO::PARAM_INT);
+$query->bindParam(':pcategory',$pcategory,PDO::PARAM_INT);
 $query->bindParam(':pimage',$pimage,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
