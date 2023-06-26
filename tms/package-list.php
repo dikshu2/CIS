@@ -44,7 +44,9 @@ include('includes/config.php');
 			<h3>Package List</h3>
 
 					
-<?php $sql = "SELECT * from tbltourpackages";
+<?php
+$cid = $_GET['cid'];
+ $sql = "SELECT * from tbltourpackages where CategoryId=$cid";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
