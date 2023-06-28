@@ -41,10 +41,11 @@ include('includes/config.php');
 	<div class="container">
 		
 		<div class="room-bottom">
-			<h3>Package List</h3>
+			<h3>Category List</h3>
 
 					
 <?php $sql = "SELECT * from tblcategory";
+$useremail=$_SESSION['login'];
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -61,10 +62,7 @@ foreach($results as $result)
 					<h4>Category Name: <?php echo htmlentities($result->CategoryName);?></h4>
 					
 </div>
-					<a href="package-list.php?cid=<?php echo htmlentities($result->CategoryId);?>" class="view">Details</a>
-
-					
-					
+					<a href="package-list.php?cid=<?php echo htmlentities($result->CategoryId);?>"  class="view">Details</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

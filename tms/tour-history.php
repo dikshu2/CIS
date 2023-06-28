@@ -57,7 +57,7 @@ $error="You can't cancel booking before 24 hours";
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>TMS | Tourism Management System</title>
+<title>CIS | City Management System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Tourism Management System In PHP" />
@@ -118,13 +118,13 @@ $error="You can't cancel booking before 24 hours";
 	<table border="1" width="100%">
 <tr align="center">
 <th>#</th>
-<th>Booking Id</th>
-<th>Package Name</th>	
+<th> Id</th>
+<th> Name</th>	
 <th>From</th>
 <th>To</th>
 <th>Comment</th>
 <th>Status</th>
-<th>Booking Date</th>
+<th> Date</th>
 <th>Action</th>
 </tr>
 <?php 

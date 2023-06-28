@@ -89,10 +89,10 @@ include('includes/config.php');
 
 
 	
-	<h3>Package List</h3>
+	<h3>Place List</h3>
 
 					
-<?php $sql = "SELECT * from tbltourpackages order by rand() limit 4";
+	<?php $sql = "SELECT * from tbltourpackages order by rand() limit 4";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -106,13 +106,10 @@ foreach($results as $result)
 					<img src="admin/pacakgeimages/<?php echo htmlentities($result->PackageImage);?>" class="img-responsive" alt="">
 				</div>
 				<div class="col-md-6 room-midle wow fadeInUp animated" data-wow-delay=".5s">
-					<h4>Package Name: <?php echo htmlentities($result->PackageName);?></h4>
-					<h6>Package Type : <?php echo htmlentities($result->PackageType);?></h6>
-					<p><b>Package Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>
-					<p><b>Features</b> <?php echo htmlentities($result->PackageFetures);?></p>
+					<h4>Name: <?php echo htmlentities($result->PackageName);?></h4>
+					<p><b>Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>
 				</div>
 				<div class="col-md-3 room-right wow fadeInRight animated" data-wow-delay=".5s">
-					<h5>USD <?php echo htmlentities($result->PackagePrice);?></h5>
 					<a href="package-details.php?pkgid=<?php echo htmlentities($result->PackageId);?>" class="view">Details</a>
 				</div>
 				<div class="clearfix"></div>
@@ -121,7 +118,7 @@ foreach($results as $result)
 <?php }} ?>
 			
 		
-<div><a href="package-list.php" class="view">View More Packages</a></div>
+<div><a href="package-list.php" class="view">View More</a></div>
 </div>
 			<div class="clearfix"></div>
 	</div>
@@ -147,7 +144,7 @@ foreach($results as $result)
 			</div>
 			<div class="rou-rgt">
 				<h3>1900</h3>
-				<p>Regestered users</p>
+				<p>Registered users</p>
 			</div>
 				<div class="clearfix"></div>
 		</div>
@@ -157,7 +154,7 @@ foreach($results as $result)
 			</div>
 			<div class="rou-rgt">
 				<h3>7,00,00,000+</h3>
-				<p>Booking</p>
+				<p>Website Visit</p>
 			</div>
 				<div class="clearfix"></div>
 		</div>
