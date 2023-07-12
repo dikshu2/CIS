@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(strlen($_SESSION['login'])==0)
 	{	
@@ -10,13 +10,13 @@ else{
 if(isset($_REQUEST['bkid']))
 	{
 		$bid=intval($_GET['bkid']);
-$email=$_SESSION['login'];
-	$sql ="SELECT FromDate FROM tblbooking WHERE UserEmail=:email and BookingId=:bid";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':bid', $bid, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
+		$email=$_SESSION['login'];
+		$sql ="SELECT regdate FROM tblbooking WHERE UserEmail=:email and BookingId=:bid";
+	$query= $dbh -> prepare($sql);
+	$query-> bindParam(':email', $email, PDO::PARAM_STR);
+	$query-> bindParam(':bid', $bid, PDO::PARAM_STR);
+	$query-> execute();
+	$results = $query -> fetchAll(PDO::FETCH_OBJ);
 if($query->rowCount() > 0)
 {
 foreach($results as $result)
@@ -103,14 +103,14 @@ $error="You can't cancel booking before 24 hours";
 <?php include('includes/header.php');?>
 <div class="banner-1 ">
 	<div class="container">
-		<h1 class="wow zoomIn animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: zoomIn;">TMS-Tourism Management System</h1>
+		<h1 class="wow zoomIn animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: zoomIn;">CIS-City Information System</h1>
 	</div>
 </div>
 <!--- /banner-1 ---->
 <!--- privacy ---->
 <div class="privacy">
 	<div class="container">
-		<h3 class="wow fadeInDown animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInDown;">My Tour History</h3>
+		<h3 class="wow fadeInDown animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInDown;">My Event History</h3>
 		<form name="chngpwd" method="post" onSubmit="return valid();">
 		 <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
@@ -118,10 +118,8 @@ $error="You can't cancel booking before 24 hours";
 	<table border="1" width="100%">
 <tr align="center">
 <th>#</th>
-<th> Id</th>
-<th> Name</th>	
-<th>From</th>
-<th>To</th>
+<th> Id</th>	
+<th>Name</th>
 <th>Comment</th>
 <th>Status</th>
 <th> Date</th>
@@ -130,7 +128,12 @@ $error="You can't cancel booking before 24 hours";
 <?php 
 
 $uemail=$_SESSION['login'];;
-$sql = "SELECT tblbooking.BookingId as bookid,tblbooking.PackageId as pkgid,tbltourpackages.PackageName  as todate,tblbooking.Comment as comment,tblbooking.status as status,tblbooking.RegDate as regdate,tblbooking.CancelledBy as cancelby,tblbooking.UpdationDate as upddate from tblbooking join tbltourpackages on tbltourpackages.PackageId=tblbooking.PackageId where UserEmail=:uemail";
+$sql = "SELECT tblbooking.BookingId as bookid, tblbooking.PackageId as pkgid, tbltourpackages.PackageName as 
+packagename, tblbooking.Comment as comment, tblbooking.status as status, tblbooking.RegDate as regdate, tblbooking.CancelledBy as 
+cancelby, tblbooking.UpdationDate as upddate
+FROM tblbooking
+JOIN tbltourpackages ON tbltourpackages.PackageId = tblbooking.PackageId
+WHERE UserEmail = :uemail";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':uemail', $uemail, PDO::PARAM_STR);
 $query->execute();
@@ -142,10 +145,8 @@ foreach($results as $result)
 {	?>
 <tr align="center">
 <td><?php echo htmlentities($cnt);?></td>
-<td>#BK<?php echo htmlentities($result->bookid);?></td>
-<td><a href="package-details.php?pkgid=<?php echo htmlentities($result->pkgid);?>"><?php echo htmlentities($result->packagename);?></a></td>
-<td><?php echo htmlentities($result->fromdate);?></td>
-<td><?php echo htmlentities($result->todate);?></td>
+<td>#CM<?php echo htmlentities($result->bookid);?></td>
+<td><a href="package-details.php?pkgid=<?php echo htmlentities($result->pkgid);?>"><?php echo isset($result->PackageName) ? htmlentities($result->PackageName) : '';?></a></td>
 <td><?php echo htmlentities($result->comment);?></td>
 <td><?php if($result->status==0)
 {

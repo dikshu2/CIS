@@ -8,12 +8,12 @@ $pid=intval($_GET['pkgid']);
 $useremail=$_SESSION['login'];
 $comment=$_POST['comment'];
 $status=0;
-$sql="INSERT INTO tblbooking(PackageId,UserEmail,Comment,status) VALUES(:pid,:useremail,:comment,:status)";
+$sql="INSERT INTO tblbooking(PackageId,UserEmail,Comment,AdimReply) VALUES(:pid,:useremail,:comment,:adminreply)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pid',$pid,PDO::PARAM_STR);
 $query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
 $query->bindParam(':comment',$comment,PDO::PARAM_STR);
-$query->bindParam(':status',$status,PDO::PARAM_STR);
+$query->bindParam(':adminreply',$status,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
@@ -50,6 +50,7 @@ $error="Something went wrong. Please try again";
 	<script>
 		 new WOW().init();
 	</script>
+	
 	  <style>
 		.errorWrap {
     padding: 10px;
@@ -66,6 +67,29 @@ $error="Something went wrong. Please try again";
     border-left: 4px solid #5cb85c;
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+}
+.comments-container {
+  margin-top: 20px;
+}
+
+.comment {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-author {
+  font-weight: bold;
+}
+.admin-reply {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.comment-text {
+  margin-top: 5px;
 }
 		</style>				
 </head>
@@ -91,6 +115,7 @@ $query -> bindParam(':pid', $pid, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
+
 if($query->rowCount() > 0)
 {
 foreach($results as $result)
@@ -133,13 +158,38 @@ foreach($results as $result)
 			
 		</div>
 		</form>
+		<?php
+		$packageId=intval($_GET['pkgid']);
+
+		$sql = "SELECT tblusers.FullName as fname, tblbooking.Comment as cmt,tblbooking.AdminReply as adminReply
+				FROM tblusers
+				INNER JOIN tblbooking ON tblbooking.UserEmail = tblusers.EmailId
+				WHERE tblbooking.PackageId = :packageId";
+$query = $dbh->prepare($sql);
+$query->bindParam(':packageId', $packageId, PDO::PARAM_INT);
+$query->execute();
+$results = $query->fetchAll(PDO::FETCH_OBJ);
+$cnt = 1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{				?>		
+ <div class="comment">
+	<div class="comment-author"><?php echo htmlentities($result->fname);?></div>
+	<div class="comment-text"><?php echo htmlentities($result->cmt);?></div>
+	<?php if (!empty($result->adminReply)) { ?>
+		<div class="admin-reply">Admin <br><?php echo htmlentities($result->adminReply);?></div>
+	<?php } ?>
+</div>
+							
+							<?php }}?>
 <?php }} ?>
 
 
 	</div>
 </div>
 <!--- /selectroom ---->
-<<!--- /footer-top ---->
+<!--- /footer-top ---->
 <?php include('includes/footer.php');?>
 <!-- signup -->
 <?php include('includes/signup.php');?>			

@@ -38,7 +38,7 @@
 <div class="header">
 	<div class="container">
 		<div class="logo wow fadeInDown animated" data-wow-delay=".5s">
-			<a href="index.php">City <span>Information System</span></a>	
+			<a href="index.php">City <span> Information System</span></a>	
 		</div>
 	
 		<div class="lock fadeInDown animated" data-wow-delay=".5s"> 
@@ -72,7 +72,7 @@
 							<li><a href="contact.php">Contact us</a></li>
 							<li><a href="about.php">About Us</a></li>
 							<!-- <li><a href="page.php?type=aboutus">About</a></li> -->
-								<li><a href="package-list.php">Event</a></li>
+								<li><a href="event.php">Event</a></li>
 								<li><a href="category-list.php">Category</a></li>
 								<li><a href="page.php?type=privacy">Chat</a></li>
 								<li><a href="page.php?type=terms">Map</a></li>

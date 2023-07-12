@@ -6,9 +6,10 @@ include('includes/config.php');
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>CIS | Confirmation </title>
+<title>CIS | City Information System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <script type="applijewelleryion/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 <link href="css/style.css" rel='stylesheet' type='text/css' />
@@ -26,39 +27,23 @@ include('includes/config.php');
 		 new WOW().init();
 	</script>
 <!--//end-animate-->
+<style>
+body {
+  font-size: 20px;
+  position: relative;
+}
+.button-corner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  color:green;
+}
+</style>
 </head>
 <body>
 <?php include('includes/header.php');?>
-<div class="banner-1 ">
-	<div class="container">
-		<h1 class="wow zoomIn animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: zoomIn;"> CIS- City Management System</h1>
-	</div>
-</div>
-<!--- /banner-1 ---->
-<!--- contact ---->
-<div class="contact">
-	<div class="container">
-	<h3> Confirmation</h3>
-		<div class="col-md-10 contact-left">
-			<div class="con-top animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp;">
-	
 
-              <h4>  <?php echo htmlentities($_SESSION['msg']);?></h4>
-            
-			</div>
-		
-			<div class="clearfix"></div>
-	</div>
-</div>
-<!--- /contact ---->
-<?php include('includes/footer.php');?>
-<!-- sign -->
-<?php include('includes/signup.php');?>	
-<!-- signin -->
-<?php include('includes/signin.php');?>	
-<!-- //signin -->
-<!-- write us -->
-<?php include('includes/write-us.php');?>	
-<!-- //write us -->
+<a href="eventform.php" class="button-corner"><span style='font-size:100px; color:green;'>&#10133;</span></a>
 </body>
 </html>

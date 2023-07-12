@@ -114,7 +114,7 @@ $msg="Enquiry  successfully read";
 					    <table id="table">
 						<thead>
 						  <tr>
-						  <th>Ticket id</th>
+						  <th>Id</th>
 							<th>Name</th>
 							<th>Mobile No./ Email</th>
 							

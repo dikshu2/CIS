@@ -6,12 +6,16 @@ $fname=$_POST['fname'];
 $mnumber=$_POST['mobilenumber'];
 $email=$_POST['email'];
 $password=md5($_POST['password']);
-$sql="INSERT INTO  tblusers(FullName,MobileNumber,EmailId,Password) VALUES(:fname,:mnumber,:email,:password)";
+$ran_id=  rand(time(), 100000000);
+$status = "Active now";
+$sql="INSERT INTO  tblusers(unique_id,FullName,MobileNumber,EmailId,Password,status) VALUES(:ran_id,:fname,:mnumber,:email,:password,:status)";
 $query = $dbh->prepare($sql);
+$query->bindParam(':ran_id',$ran_id,PDO::PARAM_INT);
 $query->bindParam(':fname',$fname,PDO::PARAM_STR);
 $query->bindParam(':mnumber',$mnumber,PDO::PARAM_STR);
 $query->bindParam(':email',$email,PDO::PARAM_STR);
 $query->bindParam(':password',$password,PDO::PARAM_STR);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)

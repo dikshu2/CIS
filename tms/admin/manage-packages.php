@@ -11,7 +11,7 @@ else{
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>TMS | Admin Manage Place</title>
+<title>CIS | Admin Manage Place</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -94,7 +94,10 @@ else{
 						  </tr>
 						</thead>
 						<tbody>
-<?php $sql = "SELECT * from TblTourPackages";
+<?php $sql = "SELECT TP.*, TC.CategoryName
+        FROM TblTourPackages TP
+        INNER JOIN TblCategory TC ON TP.CategoryId = TC.CategoryId";
+
 $query = $dbh -> prepare($sql);
 //$query -> bindParam(':city', $city, PDO::PARAM_STR);
 $query->execute();
@@ -108,8 +111,8 @@ foreach($results as $result)
 							<td><?php echo htmlentities($cnt);?></td>
 							<td><?php echo htmlentities($result->PackageName);?></td>
 							<td><?php echo htmlentities($result->PackageLocation);?></td>
-							<td><?php echo htmlentities($result->Category);?></td>
-							<td><?php echo htmlentities($result->Creationdate);?></td>
+							<td><?php echo htmlentities($result->CategoryName);?></td>
+							<td><?php echo htmlentities($result->CreationDate);?></td>
 							<td><a href="update-package.php?pid=<?php echo htmlentities($result->PackageId);?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
 						  </tr>
 						 <?php $cnt=$cnt+1;} }?>
