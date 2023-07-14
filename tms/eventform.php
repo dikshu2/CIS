@@ -5,30 +5,34 @@ error_reporting(0);
 include('includes/config.php');
 if(isset($_POST['submit']))
 {
+$eid=intval($_GET['eid']);
+$useremail=$_SESSION['login'];
 $ename=$_POST['eventname'];	
 $elocation=$_POST['eventlocation'];
 $edetails=$_POST['eventdetails'];	
 $eschedule=$_POST['schedule'];
-$ecpacity=$_POST['audience_capacity'];
-$epayment=$_POST['payment_type'];
-$eammount=$_POST['amount'];
-$pimage=$_FILES["eventimage"]["name"];
+$ecapacity=$_POST['audience_capacity'];
+//$epayment=$_POST['payment_type'];
+$eamount=$_POST['amount'];
+$eimage=$_FILES["eventimage"]["name"];
 move_uploaded_file($_FILES["eventimage"]["tmp_name"],"eventimages/".$_FILES["eventimage"]["name"]);
-$sql="INSERT INTO tblevent(EventName,EventLocation,schedule,EventDetails,schedule,audience_capacity,payment_typeamount,EventImage) VALUES(:ename,:elocation,:edetails,:eschedule,:ecapacity,:epayment,:eamount,:eimage)";
+$sql="INSERT INTO tblevent(EventID,UserEmail,EventName,EventLocation,EventDetails,schedule,audience_capacity,amount,EventImage) VALUES(:eid,:useremail,:ename,:elocation,:edetails,:eschedule,:ecapacity,:eamount,:eimage)";
 $query = $dbh->prepare($sql);
+$query->bindParam(':eid',$eid,PDO::PARAM_STR);
+$query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
 $query->bindParam(':ename',$ename,PDO::PARAM_STR);
 $query->bindParam(':elocation',$elocation,PDO::PARAM_STR);
 $query->bindParam(':edetails',$edetails,PDO::PARAM_STR);
 $query->bindParam(':eschedule',$eschedule,PDO::PARAM_STR);
 $query->bindParam(':ecapacity',$ecapacity,PDO::PARAM_INT);
-$query->bindParam(':epayment',$epayment,PDO::PARAM_INT);
+//$query->bindParam(':epayment',$epayment,PDO::PARAM_INT);
 $query->bindParam(':eamount',$eamount,PDO::PARAM_INT);
 $query->bindParam(':eimage',$eimage,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
-$msg="Package Created Successfully";
+$msg="Event Created Successfully";
 }
 else 
 {
@@ -41,7 +45,7 @@ $error="Something went wrong. Please try again";
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>CIS | Place Details</title>
+<title>CIS | Create </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="applijewelleryion/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -130,26 +134,21 @@ $error="Something went wrong. Please try again";
 								<div class="form-group">
                                 <label for="focusedinput" class="col-sm-2 control-label">Schedule</label>
 									<div class="col-sm-8">
-										<input type="datetime-local" class="form-control1" name="eventschedule" id="eventschedule" placeholder="Event Schedule" required>
+										<input type="datetime-local" class="form-control1" name="schedule" id="schedule" placeholder="Event Schedule" required>
 									</div>
 								</div>
 
                                     <div class="form-group">
 									<label for="focusedinput" class="col-sm-2 control-label">Details</label>
 									<div class="col-sm-8">
-										<textarea class="form-control" rows="5" cols="50" name="eventdetail" id="eventdetail" placeholder="Event detail" required></textarea> 
+										<textarea class="form-control" rows="5" cols="50" name="eventdetails" id="eventdetails" placeholder="Event detail" required></textarea> 
 									</div>
 								</div>	
-								<div class="form-group">
-                                <label for="focusedinput" class="col-sm-2 control-label">Free for All</label>
-									<div class="col-sm-8">
-										<input type="checkbox" class="form-control1" name="payment_type" id="payment-type" required>
-									</div>
-								</div>
+								
                                 <div class="form-group">
                                 <label for="focusedinput" class="col-sm-2 control-label">Registration fee</label>
 									<div class="col-sm-8">
-										<input  type="number" class="form-control1" name="ammount" id="ammount" required>
+										<input  type="number" class="form-control1" name="amount" id="amount" required>
 									</div>
 								</div>
 								<div class="form-group">
@@ -169,16 +168,20 @@ $error="Something went wrong. Please try again";
 
 								<div class="row">
 			<div class="col-sm-8 col-sm-offset-2">
-				<button type="submit" name="submit" class="btn-primary btn">Create</button>
+			<?php if($_SESSION['login'])
+					{?>
+						<li class="spe">
+					<button type="submit" name="submit" class="btn-primary btn">Create</button>
+						</li>
+						<?php } else {?>
+							<li class="sigi"  style="margin-top: 1%">
+							<a href="#" data-toggle="modal" data-target="#myModal4" class="btn-primary btn" >Create</a></li>
+							<?php } ?>
 
-				<button type="reset" class="btn-inverse btn">Reset</button>
+				<button type="reset" class="btn-primary btn ">Reset</button>
+				<div class="clearfix"></div>
 			</div>
-		</div>
-						
-					
-						
-						
-						
+		</div>		
 					</div>
 					
 					</form>
@@ -197,7 +200,7 @@ $error="Something went wrong. Please try again";
 <?php include('includes/signin.php');?>			
 <!-- //signin -->
 <!-- write us -->
-<?php include('includes/write-us.php');?>
+
 
 </body>
 </html>

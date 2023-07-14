@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['login'])==0)
 	{	
@@ -110,7 +110,7 @@ $error="You can't cancel booking before 24 hours";
 <!--- privacy ---->
 <div class="privacy">
 	<div class="container">
-		<h3 class="wow fadeInDown animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInDown;">My Event History</h3>
+		<h3 class="wow fadeInDown animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInDown;">My Event Booking History</h3>
 		<form name="chngpwd" method="post" onSubmit="return valid();">
 		 <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
@@ -127,7 +127,7 @@ $error="You can't cancel booking before 24 hours";
 </tr>
 <?php 
 
-$uemail=$_SESSION['login'];;
+$uemail=$_SESSION['login'];
 $sql = "SELECT tblbooking.BookingId as bookid, tblbooking.PackageId as pkgid, tbltourpackages.PackageName as 
 packagename, tblbooking.Comment as comment, tblbooking.status as status, tblbooking.RegDate as regdate, tblbooking.CancelledBy as 
 cancelby, tblbooking.UpdationDate as upddate

@@ -84,14 +84,7 @@ include('includes/config.php');
 <!---holiday---->
 <div class="container">
 	<div class="holiday">
-	
-
-
-
-	
-	<h3>Place List</h3>
-
-					
+	<h3>Place List</h3>				
 	<?php $sql = "SELECT * from tbltourpackages order by rand() limit 4";
 $query = $dbh->prepare($sql);
 $query->execute();
