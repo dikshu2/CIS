@@ -1,30 +1,53 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(isset($_POST['submit2']))
 {
-$ebid=intval($_GET['id']);
 $useremail=$_SESSION['login'];
 $eventseat=$_POST['seat'];
 $comment=$_POST['comment'];
+$eventid=$_POST['eid'];
 $status=0;
-$sql="INSERT INTO tbleventbooking(EventId,UserEmail,Seat,Comment,status) VALUES(:ebid,:useremail,:seat,:comment,:status)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':ebid',$ebid,PDO::PARAM_STR);
-$query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
-$query->bindParam(':seat',$eventseat,PDO::PARAM_STR);
-$query->bindParam(':comment',$comment,PDO::PARAM_STR);
-$query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Booked Successfully";
-}
-else 
-{
-$error="Something went wrong. Please try again";
+
+
+$selectSql = "SELECT audience_capacity FROM tblevent WHERE EventId = :eid";
+$selectQuery = $dbh->prepare($selectSql);
+$selectQuery->bindParam(':eid', $eventid, PDO::PARAM_INT);
+$selectQuery->execute();
+$row = $selectQuery->fetch(PDO::FETCH_ASSOC);
+$audienceCapacity = $row['audience_capacity'];
+
+// Update the audience_capacity in tblevent after subtracting the seat value
+$updatedCapacity = $audienceCapacity - $eventseat;
+if ($updatedCapacity < 0 ) {
+	$msg = "Entered number of seats are not available.";
+} elseif($eventseat == 0){
+	$msg = "please enter number of seats";
+}else{
+	$updateSql = "UPDATE tblevent SET audience_capacity = :updatedCapacity WHERE EventId = :eid";
+	$updateQuery = $dbh->prepare($updateSql);
+	$updateQuery->bindParam(':updatedCapacity', $updatedCapacity, PDO::PARAM_INT);
+	$updateQuery->bindParam(':eid', $eventid, PDO::PARAM_INT);
+	$updateQuery->execute();
+	
+	$sql="INSERT INTO tbleventbooking(EventId,UserEmail,Seat,Comment,status) VALUES(:eid,:useremail,:seat,:comment,:status)";
+	$query = $dbh->prepare($sql);
+	$query->bindParam(':eid',$eventid,PDO::PARAM_INT);
+	$query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
+	$query->bindParam(':seat',$eventseat,PDO::PARAM_STR);
+	$query->bindParam(':comment',$comment,PDO::PARAM_STR);
+	$query->bindParam(':status',$status,PDO::PARAM_STR);
+	$query->execute();
+	$lastInsertId = $dbh->lastInsertId();
+	if($lastInsertId)
+	{
+	$msg="Booked Successfully";
+	}
+	else 
+	{
+	$error="Something went wrong. Please try again";
+	}
 }
 
 }
@@ -108,7 +131,7 @@ $error="Something went wrong. Please try again";
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
  
 
-<?php $sql = "SELECT * from tblevent";
+<?php $sql = "SELECT * from tblevent where status=1";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -142,15 +165,16 @@ foreach($results as $result)
 		</div>
 		<div class="selectroom_top">
 			<h2></h2>
+			<input type="hidden" name="eid" value="<?php echo $result->EventId; ?>">
 			<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
 				<ul>
 				<li class="spe">
 						<label class="inputLabel">Seat</label>
-						<input class="special" type="number" name="seat" required="">
+						<input class="special" type="number" name="seat" required>
 					</li>
 					<li class="spe">
 						<label class="inputLabel">Comment</label>
-						<input class="special" type="text" name="comment" required="">
+						<input class="special" type="text" name="comment" required>
 					</li>
 					<?php if($_SESSION['login'])
 					{?>
@@ -174,7 +198,7 @@ foreach($results as $result)
 </div>
 <a href="eventform.php" class="button-corner emoji"><span style='font-size:100px; color:green;'>&#10133;</span></a>
 <!--- /selectroom ---->
-<<!--- /footer-top ---->
+<!--- /footer-top ---->
 <?php include('includes/footer.php');?>
 <!-- signup -->
 <?php include('includes/signup.php');?>			

@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(strlen($_SESSION['login'])==0)
 	{	
@@ -9,9 +9,9 @@ header('location:index.php');
 else{
 if(isset($_REQUEST['evid']))
 	{
-		$eid=intval($_GET['evid']);
+$eid=intval($_GET['evid']);
 $email=$_SESSION['login'];
-$sql ="SELECT CreationDate FROM tblevent WHERE UserEmail=:email and EventId=:eid";
+$sql ="SELECT CreationDate, schedule FROM tblevent WHERE UserEmail=:email and EventId=:eid";
 $query= $dbh -> prepare($sql);
 $query-> bindParam(':email', $email, PDO::PARAM_STR);
 $query-> bindParam(':eid', $eid, PDO::PARAM_STR);
@@ -21,11 +21,10 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 {
-	 $fdate=$result->schedule;
-
+	$fdate=$result->schedule;
 	$a=explode("/",$fdate);
 	$val=array_reverse($a);
-	 $mydate =implode("/",$val);
+	$mydate =implode("/",$val);
 	$cdate=date('Y/m/d');
 	$date1=date_create("$cdate");
 	$date2=date_create("$fdate");
@@ -36,6 +35,7 @@ if($df>=0)
 $status=2;
 $cancelby='u';
 $sql = "UPDATE tblevent SET status=:status,CancelledBy=:cancelby WHERE UserEmail=:email and EventId=:eid";
+echo $sql;
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> bindParam(':cancelby',$cancelby , PDO::PARAM_STR);
@@ -130,7 +130,7 @@ else
 </tr>
 <?php 
 
-$uemail=$_SESSION['login'];;
+$uemail=$_SESSION['login'];
 $sql = "SELECT * from tblevent where UserEmail=:uemail";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':uemail', $uemail, PDO::PARAM_STR);
@@ -158,13 +158,13 @@ if($result->status==1)
 {
 echo "Confirmed";
 }
-if($result->status==2 and  $result->cancelby=='u')
+if($result->status==2 and  $result->CancelledBy=='u')
 {
-echo "Canceled by you at " .$result->upddate;
+echo "Canceled by you at " .$result->UpdationDate;
 } 
-if($result->status==2 and $result->cancelby=='a')
+if($result->status==2 and $result->CancelledBy=='a')
 {
-echo "Canceled by admin at " .$result->upddate;
+echo "Canceled by admin at " .$result->UpdationDate;
 
 }
 ?></td>
@@ -173,7 +173,7 @@ echo "Canceled by admin at " .$result->upddate;
 {
 	?><td>Cancelled</td>
 <?php } else {?>
-<td><a href="tour-history.php?bkid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Do you really want to cancel Event')" >Cancel</a></td>
+<td><a href="eventhistory.php?evid=<?php echo htmlentities($result->EventId);?>" onclick="return confirm('Do you really want to cancel Event')" >Cancel</a></td>
 <?php }?>
 </tr>
 <?php $cnt=$cnt+1; }} ?>

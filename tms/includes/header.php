@@ -8,6 +8,7 @@
 				<li class="prnt"><a href="change-password.php">Change Password</a></li>
 			<li class="prnt"><a href="eventhistory.php">My Event History</a></li>
 			<li class="prnt"><a href="tour-history.php">My Booking History</a></li>
+			<li class="prnt"><a href="customereventhistory.php">User registered details</a></li>
 			<li class="prnt"><a href="issuetickets.php">Issue Tickets</a></li>
 		</ul>
 		<ul class="tp-hd-rgt wow fadeInRight animated" data-wow-delay=".5s"> 
@@ -68,20 +69,20 @@
 				<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
 					<nav class="cl-effect-1">
 						<ul class="nav navbar-nav">
-							<li><a href="index.php">Home</a></li>
-							<li><a href="contact.php">Contact us</a></li>
-							<li><a href="about.php">About Us</a></li>
+							<li><a href="/tms/tms/index.php">Home</a></li>
+							<li><a href="/tms/tms/contact.php">Contact us</a></li>
+							<li><a href="/tms/tms/about.php">About Us</a></li>
 							<!-- <li><a href="page.php?type=aboutus">About</a></li> -->
-								<li><a href="event.php">Event</a></li>
-								<li><a href="category-list.php">Category</a></li>
-								<li><a href="page.php?type=privacy">Chat</a></li>
-								<li><a href="page.php?type=terms">Map</a></li>
+								<li><a href="/tms/tms/event.php">Event</a></li>
+								<li><a href="/tms/tms/category-list.php">Category</a></li>
+								<li><a href="/tms/tms/chat/index.php">Chat</a></li>
+								<li><a href="/tms/tms/page.php?type=terms">Map</a></li>
 								<!-- <li><a href="page.php?type=contact">Contact Us</a></li> -->
 								<?php if($_SESSION['login'])
 {?>
 								<li>Need Help?<a href="#" data-toggle="modal" data-target="#myModal3"> / Write Us </a>  </li>
 								<?php } else { ?>
-								<li><a href="enquiry.php"> Enquiry </a>  </li>
+								<li><a href="tms/tms/enquiry.php"> Enquiry </a>  </li>
 								<?php } ?>
 								<div class="clearfix"></div>
 

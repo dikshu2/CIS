@@ -134,7 +134,7 @@ $sql = "SELECT tbleventbooking.Id as bid,tblusers.FullName as fname,tblusers.Mob
 email,tblevent.EventName as ename,tbleventbooking.Seat as seat, tbleventbooking.Comment as cmt,tbleventbooking.RegDate as date,tbleventbooking.status as status,tbleventbooking.CancelledBy as cancelby,
 tbleventbooking.UpdationDate as upddate FROM tblusers
 JOIN tbleventbooking ON tbleventbooking.UserEmail = tblusers.EmailId
-LEFT JOIN tblevent ON tblevent.EventId = tbleventbooking.EventId where tbleventbooking.UserEmail='$email'";
+LEFT JOIN tblevent ON tblevent.EventId = tbleventbooking.EventId where tblevent.UserEmail='$email'";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -176,7 +176,7 @@ echo "Canceled by admin at " .$result->upddate;
 {
 	?><td>Cancelled</td>
 <?php } else {?>
-<td><a href="tour-history.php?evid=<?php echo htmlentities($result->bid);?>" onclick="return confirm('Do you really want to cancel Event')" >Cancel</a></td>
+<td><a href="customereventhistory.php?evid=<?php echo htmlentities($result->bid);?>" onclick="return confirm('Do you really want to cancel Event')" >Cancel</a></td>
 <?php }?>
 </tr>
 <?php $cnt=$cnt+1; }} ?>

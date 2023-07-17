@@ -105,7 +105,7 @@ foreach($results as $result)
 							<td><?php echo htmlentities($result->CategoryName);?></td>
 							
 							<td><a href="update-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
-							<td><a href="delete-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block" name="delete_btn">Delete</button></a></td>
+							<td><a href="delete-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block" name="delete_btn" id="delete-btn">Delete</button></a></td>
 
 						  </tr>
 						 <?php $cnt=$cnt+1;} }?>

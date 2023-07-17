@@ -13,7 +13,7 @@ if(isset($_REQUEST['evid']))
 $eid=intval($_GET['evid']);
 $status=2;
 $cancelby='a';
-$sql = "UPDATE tblevent SET status=:status,CancelledBy=:cancelby WHERE  EventId=:eid";
+$sql = "UPDATE tblevent SET status=:status,CancelledBy=:cancelby WHERE EventId=:eid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> bindParam(':cancelby',$cancelby , PDO::PARAM_STR);
@@ -187,11 +187,12 @@ echo "Canceled by User at " .$result->upddate;
 }
 ?></td>
 
-<?php if($result->status==2)
-{
+<?php if($result->status==2){
 	?><td>Cancelled</td>
-<?php } else {?>
-<td><a href="manage-event.php?evid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Do you really want to cancel booking')" >Cancel</a> / <a href="manage-bookings.php?bckid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('booking has been confirm')" >Confirm</a></td>
+<?php } else if($result->status==1){
+	?><td> Confirmed </td>
+<?php }else {?>
+<td><a href="manage-event.php?evid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Do you really want to cancel booking')" >Cancel</a> / <a href="manage-event.php?evtid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Booking has been confirm')" >Confirm</a></td>
 <?php }?>
 
 						  </tr>
