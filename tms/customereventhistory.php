@@ -1,54 +1,44 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['login'])==0)
 	{	
 header('location:index.php');
 }
-else{
+else{ 
+	// code for cancel
 if(isset($_REQUEST['evid']))
 	{
 $eid=intval($_GET['evid']);
 $email=$_SESSION['login'];
-$sql ="SELECT RegDate FROM tbleventbooking WHERE UserEmail=:email and Id=:bid";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':bid', $eid, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{
-	$fdate=$result->schedule;
-	$a=explode("/",$fdate);
-	$val=array_reverse($a);
-	$mydate =implode("/",$val);
-	$cdate=date('Y/m/d');
-	$date1=date_create("$cdate");
-	$date2=date_create("$fdate");
-    $diff=date_diff($date1,$date2);
-    echo $df=$diff->format("%a");
-if($df>=0)
-{
 $status=2;
-$cancelby='u';
-$sql = "UPDATE tbleventbooking SET status=:status,CancelledBy=:cancelby WHERE UserEmail=:email and Id=:bid";
+$cancelby='a';
+$sql = "UPDATE tbleventbooking SET status=:status,CancelledBy=:cancelby WHERE EventId=:eid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> bindParam(':cancelby',$cancelby , PDO::PARAM_STR);
-$query-> bindParam(':email',$email, PDO::PARAM_STR);
-$query-> bindParam(':bid',$bid, PDO::PARAM_STR);
-$query -> execute();
+$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
+if($query -> execute()){
+	$msg="Event Cancelled successfully";
+} else{
+	$msg = "Failed to cancel event booking";
+}
 
-$msg="Event Cancelled successfully";
 }
-else
-{
-    $error = "You can't cancel the booking after the event date";}
-}
-}
+
+
+if(isset($_REQUEST['evtid']))
+	{
+$evid=intval($_GET['evtid']);
+$status=1;
+$cancelby='a';
+$sql = "UPDATE tbleventbooking SET status=:status WHERE EventId=:evid";
+$query = $dbh->prepare($sql);
+$query -> bindParam(':status',$status, PDO::PARAM_STR);
+$query-> bindParam(':evid',$evid, PDO::PARAM_STR);
+$query -> execute();
+$msg="Event Confirm successfully";
 }
 
 ?>
@@ -155,19 +145,19 @@ foreach($results as $result)
 <td><?php echo htmlentities($result->date);?></td>
 <td><?php if($result->status==0)
 {
-echo "Pending";
+	echo "Pending";
 }
 if($result->status==1)
 {
 echo "Confirmed";
 }
-if($result->status==2 and  $result->cancelby=='u')
+if($result->status==2 and  $result->cancelby=='a')
 {
 echo "Canceled by you at " .$result->upddate;
 } 
-if($result->status==2 and $result->cancelby=='a')
+if($result->status==2 and $result->cancelby=='u')
 {
-echo "Canceled by admin at " .$result->upddate;
+echo "Canceled by User at " .$result->upddate;
 
 }
 ?></td>

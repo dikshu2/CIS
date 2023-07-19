@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
 	{	
@@ -10,19 +10,22 @@ else{
 $pid=intval($_GET['pid']);	
 if(isset($_POST['submit']))
 {
+$pcategory = $_POST['category'];
 $pname=$_POST['packagename'];
 $plocation=$_POST['packagelocation'];
 $pdetails=$_POST['packagedetails'];	
-$pimage=$_FILES["packageimage"]["name"];
-$sql="update TblTourPackages set PackageName=:pname,PackageLocation=:plocation,PackageDetails=:pdetails where PackageId=:pid";
+$plinks=$_POST['link'];	
+// $pimage=$_FILES["packageimage"]["name"];
+$sql="update TblTourPackages set PackageName=:pname,PackageLocation=:plocation,PackageDetails=:pdetails,CategoryId=:pcategory links=:plink where PackageId=:pid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pname',$pname,PDO::PARAM_STR);
 $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
 $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
-$query->bindParam(':pcategory',$pdetails,PDO::PARAM_STR);
+$query->bindParam(':pcategory',$pcategory,PDO::PARAM_STR);
 $query->bindParam(':pid',$pid,PDO::PARAM_STR);
+$query->bindParam(':plink',$plinks,PDO::PARAM_STR);
 $query->execute();
-$msg="Package Updated Successfully";
+$msg="Place Updated Successfully";
 }
 
 	?>
@@ -60,6 +63,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
 }
+
 		</style>
 
 </head> 
@@ -107,10 +111,12 @@ $cnt=1;
 		 $categories[] = $row;
 	 }
  }
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{	?>
+ if($query->rowCount() > 0)
+ {
+ foreach($results as $result)
+ {	?>
+	
+
 
 							<form class="form-horizontal" name="package" method="post" enctype="multipart/form-data">
 								<div class="form-group">
@@ -139,12 +145,20 @@ foreach($results as $result)
 									<select name="category">
                     <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['CategoryId']; ?>">
-                            <?php echo $category['CategoryName']; ?>
+                            <?php echo $category['CategoryName'];
+						  ?>
+							
                         </option>
                     <?php endforeach; ?>
-                </select> 
+                </select>
 									</div>
-								</div>														
+								</div>	
+								<div class="form-group">
+									<label for="focusedinput" class="col-sm-2 control-label"> Link</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control1" name="link" id="link" placeholder=" Place Link" required>
+									</div>
+								</div>													
 <div class="form-group">
 <label for="focusedinput" class="col-sm-2 control-label">Image</label>
 <div class="col-sm-8">
@@ -153,13 +167,12 @@ foreach($results as $result)
 </div>
 
 <div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label">Last Updation Date</label>
-									<div class="col-sm-8">
-<?php echo htmlentities($result->UpdationDate);?>
+									<label for="focusedinput"  class="col-sm-2 control-label ">Last Updation Date</label>
+									<div class="col-sm-8 ">
+                                     <?php echo htmlentities($result->UpdationDate);?>
 									</div>
 								</div>		
-								<?php }} ?>
-
+								<?php }}?>
 								<div class="row">
 			<div class="col-sm-8 col-sm-offset-2">
 				<button type="submit" name="submit" class="btn-primary btn">Update</button>

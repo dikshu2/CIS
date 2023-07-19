@@ -104,8 +104,8 @@ foreach($results as $result)
 							<td><?php echo htmlentities($cnt);?></td>
 							<td><?php echo htmlentities($result->CategoryName);?></td>
 							
-							<td><a href="update-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
-							<td><a href="delete-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block" name="delete_btn" id="delete-btn">Delete</button></a></td>
+							<td><a href="update-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a>
+							<a href="delete-category.php?cid=<?php echo htmlentities($result->CategoryId);?>"><button type="button" class="btn btn-primary btn-block" name="delete_btn" id="delete-btn" onclick="openModal()">Delete</button></a></td>
 
 						  </tr>
 						 <?php $cnt=$cnt+1;} }?>
@@ -117,6 +117,7 @@ foreach($results as $result)
 				
 			</div>
 <!-- script-for sticky-nav -->
+
 		<script>
 		$(document).ready(function() {
 			 var navoffeset=$(".header-main").offset().top;

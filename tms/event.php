@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(isset($_POST['submit2']))
 {
@@ -196,7 +196,7 @@ foreach($results as $result)
 
 	</div>
 </div>
-<a href="eventform.php" class="button-corner emoji"><span style='font-size:100px; color:green;'>&#10133;</span></a>
+<a href="eventform.php" class="button-corner emoji"><span style='font-size:100px;'>&#10133;</span></a>
 <!--- /selectroom ---->
 <!--- /footer-top ---->
 <?php include('includes/footer.php');?>

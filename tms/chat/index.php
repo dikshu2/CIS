@@ -1,7 +1,7 @@
 <?php
 include("configuration.php");
 session_start();
-error_reporting(E_ALL);
+error_reporting();
 ini_set('display_errors', 1);
 
 // if(!isset($_SESSION['login']))
@@ -68,8 +68,8 @@ $name=$b['FullName'];
 
 
 
-<span class="heading">Welcome <?php echo $name;?></span><span style="float:right"><a href="../logout.php">
-<img src="images/logout.png" height="50" width="100"  /></a></span>
+<span class="heading"><b>Welcome</b> <?php echo $name;?></span><span style="float:right">
+<img src="images/download.png" height="50" width="100"  type="hidden"/></a></span>
 <hr style="border:6px dotted #63C;"/><br />
 <br /><div align="center">
 <table class="table" cellpadding="6" cellspacing="6">

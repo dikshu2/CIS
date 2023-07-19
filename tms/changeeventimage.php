@@ -1,59 +1,39 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
+if(strlen($_SESSION['login'])==0)
 	{	
 header('location:index.php');
 }
 else{
+	$imgid=intval($_GET['imgid']);
 if(isset($_POST['submit']))
 {
-$pname=$_POST['packagename'];	
-$plocation=$_POST['packagelocation'];
-$pdetails=$_POST['packagedetails'];	
-$pcategory=$_POST['category'];
-$plinks=$_POST['links'];
-$pimage=$_FILES["packageimage"]["name"];
-move_uploaded_file($_FILES["packageimage"]["tmp_name"],"pacakgeimages/".$_FILES["packageimage"]["name"]);
-$sql="INSERT INTO tbltourpackages(PackageName,PackageLocation,PackageDetails,CategoryId,PackageImage,links) VALUES(:pname,:plocation,:pdetails,:pcategory,:pimage,:plinks)";
+
+$eimage=$_FILES["eventimage"]["name"];
+move_uploaded_file($_FILES["eventimage"]["tmp_name"],"eventimages/".$_FILES["eventimage"]["name"]);
+$sql="update TblEvent set EventImage=:eimage where EventId=:imgid";
 $query = $dbh->prepare($sql);
-$query->bindParam(':pname',$pname,PDO::PARAM_STR);
-$query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
-$query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
-$query->bindParam(':pcategory',$pcategory,PDO::PARAM_INT);
-$query->bindParam(':pimage',$pimage,PDO::PARAM_STR);
-$query->bindParam(':plinks',$plinks,PDO::PARAM_INT);
+
+$query->bindParam(':imgid',$imgid,PDO::PARAM_STR);
+$query->bindParam(':eimage',$eimage,PDO::PARAM_STR);
 $query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Package Created Successfully";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
+$msg="Event Created Successfully";
+
+
 
 }
- // Fetch categories from the database
- $sql = "SELECT CategoryId, CategoryName FROM tblcategory";
- $result = $dbh->query($sql);
-
- // Store category data in an array
- $categories = [];
- if ($result->rowCount() > 0) {
-	 while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-		 $categories[] = $row;
-	 }
- }
 
 	?>
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>CIS | Admin Place Creation</title>
-
+<title>CIS | Admin Places Creation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Pooled Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="css/style.css" rel='stylesheet' type='text/css' />
@@ -95,74 +75,50 @@ $error="Something went wrong. Please try again";
 				</div>
 <!--heder end here-->
 	<ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php">Home</a><i class="fa fa-angle-right"></i>Create Place </li>
+                <li class="breadcrumb-item"><a href="index.html">Home</a><i class="fa fa-angle-right"></i>Update Place Image </li>
             </ol>
 		<!--grid-->
  	<div class="grid-form">
  
 <!---->
   <div class="grid-form1">
-  	       <h3>Create Place</h3>
+  	       <h3>Update Place Image </h3>
   	        	  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
   	         <div class="tab-content">
 						<div class="tab-pane active" id="horizontal-form">
 							<form class="form-horizontal" name="package" method="post" enctype="multipart/form-data">
-								<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label">Name</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control1" name="packagename" id="packagename" placeholder="Create" required>
-									</div>
-								</div>
-
-
+						<?php 
+$imgid=intval($_GET['imgid']);
+$sql = "SELECT EventImage from TblEvent where ImageId=:imgid";
+$query = $dbh -> prepare($sql);
+$query -> bindParam(':imgid', $imgid, PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{	?>	
 <div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label"> Location</label>
+<label for="focusedinput" class="col-sm-2 control-label"> Place Image </label>
+<div class="col-sm-8">
+<img src="eventimages/<?php echo htmlentities($result->EventImage);?>" width="200">
+</div>
+</div>
+																					
+<div class="form-group">
+									<label for="focusedinput" class="col-sm-2 control-label">New Image</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control1" name="packagelocation" id="packagelocation" placeholder="Location" required>
+										<input type="file" name="eventimage" id="eventimage" required>
 									</div>
 								</div>	
-
-
-<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label">Details</label>
-									<div class="col-sm-8">
-										<textarea class="form-control" rows="5" cols="50" name="packagedetails" id="packagedetails" placeholder="Details" required></textarea> 
-									</div>
-								</div>	
-								
-								<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label">Category</label>
-									<div class="col-sm-8">
-									<select name="category">
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category['CategoryId']; ?>">
-                            <?php echo $category['CategoryName'];
-						  ?>
-							
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label"> Link</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control1" name="links" id="links" placeholder=" Place Link" required>
-									</div>
-								</div>
-<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label">Image</label>
-									<div class="col-sm-8">
-										<input type="file" name="packageimage" id="packageimage" required>
-									</div>
-								</div>	
+								<?php }} ?>
 
 								<div class="row">
 			<div class="col-sm-8 col-sm-offset-2">
-				<button type="submit" name="submit" class="btn-primary btn">Create</button>
+				<button type="submit" name="submit" class="btn-primary btn">Update</button>
 
-				<button type="reset" class="btn-inverse btn">Reset</button>
 			</div>
 		</div>
 						

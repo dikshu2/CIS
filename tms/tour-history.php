@@ -11,10 +11,10 @@ if(isset($_REQUEST['evid']))
 	{
 $eid=intval($_GET['evid']);
 $email=$_SESSION['login'];
-$sql ="SELECT RegDate FROM tbleventbooking WHERE UserEmail=:email and Id=:bid";
+$sql ="SELECT RegDate FROM tbleventbooking WHERE UserEmail=:email and Id=:eid";
 $query= $dbh -> prepare($sql);
 $query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':bid', $eid, PDO::PARAM_STR);
+$query-> bindParam(':eid', $eid, PDO::PARAM_STR);
 $query-> execute();
 $results = $query -> fetchAll(PDO::FETCH_OBJ);
 if($query->rowCount() > 0)
@@ -34,12 +34,12 @@ if($df>=0)
 {
 $status=2;
 $cancelby='u';
-$sql = "UPDATE tbleventbooking SET status=:status,CancelledBy=:cancelby WHERE UserEmail=:email and Id=:bid";
+$sql = "UPDATE tbleventbooking SET status=:status,CancelledBy=:cancelby WHERE UserEmail=:email and Id=:eid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> bindParam(':cancelby',$cancelby , PDO::PARAM_STR);
 $query-> bindParam(':email',$email, PDO::PARAM_STR);
-$query-> bindParam(':bid',$bid, PDO::PARAM_STR);
+$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
 $query -> execute();
 
 $msg="Event Cancelled successfully";
@@ -123,6 +123,7 @@ else
 							<th>Event Name</th>
 							<th>Booked Seat</th>
 							<th>Comment</th>
+							<th>Message</th>
 							<th>Registration Date</th>
 							<th>Status </th>
 							<th>Action </th>
@@ -131,7 +132,7 @@ else
 
 $email=$_SESSION['login'];
 $sql = "SELECT tbleventbooking.Id as bid,tblusers.FullName as fname,tblusers.MobileNumber as mnumber,tblusers.EmailId as 
-email,tblevent.EventName as ename,tbleventbooking.Seat as seat, tbleventbooking.Comment as cmt,tbleventbooking.RegDate as date,tbleventbooking.status as status,tbleventbooking.CancelledBy as cancelby,
+email,tblevent.EventName as ename,tbleventbooking.Seat as seat, tbleventbooking.Comment as cmt,tblevent.message as msg,tbleventbooking.RegDate as date,tbleventbooking.status as status,tbleventbooking.CancelledBy as cancelby,
 tbleventbooking.UpdationDate as upddate FROM tblusers
 JOIN tbleventbooking ON tbleventbooking.UserEmail = tblusers.EmailId
 LEFT JOIN tblevent ON tblevent.EventId = tbleventbooking.EventId where tbleventbooking.UserEmail='$email'";
@@ -152,6 +153,7 @@ foreach($results as $result)
 <td><?php echo htmlentities($result->ename);?></td> 
 <td><?php echo htmlentities($result->seat);?></td>
 <td><?php echo htmlentities($result->cmt);?></td>
+<td><?php echo htmlentities($result->msg);?></td>
 <td><?php echo htmlentities($result->date);?></td>
 <td><?php if($result->status==0)
 {

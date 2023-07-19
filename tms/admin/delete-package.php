@@ -6,22 +6,20 @@ include('includes/config.php');
 if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } else {
-    if (isset($_GET['cid'])) {
-        $cid = intval($_GET['cid']);
+    if (isset($_GET['pid'])) {
+        $cid = intval($_GET['pid']);
 
         if (isset($_POST['confirm'])) {
-            // Delete the related packages
-            $deletePackagesSql = "DELETE FROM tbltourpackages WHERE CategoryId = $cid";
-            mysqli_query($conn, $deletePackagesSql);
+          
 
             // Delete the category
-            $deleteCategorySql = "DELETE FROM tblcategory WHERE CategoryId = $cid";
+            $deleteCategorySql = "DELETE FROM tbltourpackages WHERE PackageId = $cid";
             mysqli_query($conn, $deleteCategorySql);
 
-            // Enable foreign key checks
-            mysqli_query($conn, 'SET FOREIGN_KEY_CHECKS=1');
+            // // Enable foreign key checks
+            // mysqli_query($conn, 'SET FOREIGN_KEY_CHECKS=1');
 
-            $msg = "Category and related packages deleted successfully.";
+            $msg = "Places deleted successfully.";
             $_SESSION['success'] = $msg;
             header('location: manage-category.php');
             exit();
@@ -113,8 +111,8 @@ if (strlen($_SESSION['alogin']) == 0) {
 <body>
     <div id="modal" class="modal">
         <div class="modal-content">
-            <h2>Confirm Category Deletion</h2>
-            <p>Are you sure you want to delete this category? This will also delete the related packages.</p>
+            <h2>Confirm Place Deletion</h2>
+            <p>Are you sure you want to delete this Place?</p>
             <form method="post">
                 <input type="submit" name="confirm" value="Delete">
                 <a href="manage-category.php">Cancel</a>

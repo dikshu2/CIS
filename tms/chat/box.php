@@ -2,10 +2,10 @@
 include("configuration.php");
 session_start();
 
-// if(!isset($_SESSION['email']))
-// {
-// 	header("location:index.php");
-// }
+if(!isset($_SESSION['login']))
+{
+	header("location:index.php");
+}
 $msg=$_POST['msg'];
 $email=$_SESSION['login'];
 $sql=mysqli_query($al,"SELECT * FROM tblusers WHERE EmailId='$email'");
@@ -31,8 +31,8 @@ $fetch=mysqli_query($al,"SELECT * FROM box ORDER BY id DESC");
 </head>
 
 <body>
-<span class="heading">Chat Room</span><span style="float:right"><a href="logout.php">
-<img src="images/logout.png" height="50" width="100"  /></a></span>
+<span class="heading">Chat Room</span><span style="float:right">
+<img src="images/box.jpg" height="50" width="100"  /></a></span>
 <hr style="border:6px dotted #63C;"/><br />
 <br />
 <div align="center">

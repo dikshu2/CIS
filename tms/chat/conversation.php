@@ -24,13 +24,17 @@ else
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Conversation</title>
+
+
 <link href="scripts/styleSheet.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<span class="heading">Private Conversation</span><span style="float:right"><a href="logout.php">
-<img src="images/logout.png" height="50" width="100"  /></a></span>
+<span class="heading">Private Conversation</span><span style="float:right">
+<img src="images/conv.jpg" height="50" width="100"  /></a></span>
 <hr style="border:6px dotted #63C;"/><br />
+<br />
+
 <br />
 <div align="center">
 <form method="post" action="">

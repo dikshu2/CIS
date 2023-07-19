@@ -113,7 +113,9 @@ foreach($results as $result)
 							<td><?php echo htmlentities($result->PackageLocation);?></td>
 							<td><?php echo htmlentities($result->CategoryName);?></td>
 							<td><?php echo htmlentities($result->CreationDate);?></td>
-							<td><a href="update-package.php?pid=<?php echo htmlentities($result->PackageId);?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
+							<td><a href="update-package.php?pid=<?php echo htmlentities($result->PackageId);?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a>
+							<a href="delete-package.php?pid=<?php echo htmlentities($result->PackageId);?>"><button type="button" class="btn btn-primary btn-block" name="delete_btn" id="delete-btn" onclick="openModal()">Delete</button></a></td>
+
 						  </tr>
 						 <?php $cnt=$cnt+1;} }?>
 						</tbody>

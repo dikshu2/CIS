@@ -10,6 +10,7 @@ else{
 if(isset($_REQUEST['evid']))
 	{
 $eid=intval($_GET['evid']);
+$msg=intval($_GET['msg']);
 $email=$_SESSION['login'];
 $sql ="SELECT CreationDate, schedule FROM tblevent WHERE UserEmail=:email and EventId=:eid";
 $query= $dbh -> prepare($sql);
@@ -34,13 +35,14 @@ if($df>=0)
 {
 $status=2;
 $cancelby='u';
-$sql = "UPDATE tblevent SET status=:status,CancelledBy=:cancelby WHERE UserEmail=:email and EventId=:eid";
-echo $sql;
+$msg='Event Canclled';
+$sql = "UPDATE tblevent SET status=:status,CancelledBy=:cancelby,message=:msg WHERE UserEmail=:email and EventId=:eid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> bindParam(':cancelby',$cancelby , PDO::PARAM_STR);
 $query-> bindParam(':email',$email, PDO::PARAM_STR);
-$query-> bindParam(':eid',$bid, PDO::PARAM_STR);
+$query-> bindParam(':msg',$msg, PDO::PARAM_STR);
+$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
 $query -> execute();
 
 $msg="Event Cancelled successfully";
@@ -173,7 +175,29 @@ echo "Canceled by admin at " .$result->UpdationDate;
 {
 	?><td>Cancelled</td>
 <?php } else {?>
-<td><a href="eventhistory.php?evid=<?php echo htmlentities($result->EventId);?>" onclick="return confirm('Do you really want to cancel Event')" >Cancel</a></td>
+	<td>
+    <a href="eventhistory.php?evid=<?php echo htmlentities($result->EventId);?>" onclick="cancelEvent(event)">Cancel</a>
+
+<script>
+    function cancelEvent(event) {
+        event.preventDefault(); // Prevent the default link behavior
+
+        // Prompt the user for a message
+        var userMessage = prompt("Please enter a cancellation message:");
+
+        // Construct the new URL with the user's message
+        var eventId = <?php echo htmlentities($result->EventId); ?>;
+        var url = "eventhistory.php?evid=" + eventId + "&msg=" + encodeURIComponent(userMessage);
+
+        // Display the confirmation message
+        var confirmCancel = confirm('Do you really want to cancel the event?');
+        if (confirmCancel) {
+            window.location.href = url; // Proceed with the cancellation
+        }
+    }
+</script>
+
+<a href="updateevent.php?evid=<?php echo htmlentities($result->EventId);?>" onclick="return confirm('Do you really want to update Event')" >Update</a></td>
 <?php }?>
 </tr>
 <?php $cnt=$cnt+1; }} ?>
