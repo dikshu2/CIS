@@ -28,7 +28,7 @@ $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
-$msg="Package Created Successfully";
+$msg="Place Created Successfully";
 }
 else 
 {

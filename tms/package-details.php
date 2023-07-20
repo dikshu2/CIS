@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(isset($_POST['submit2']))
 {
@@ -40,6 +40,7 @@ $error="Something went wrong. Please try again";
 <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 <link href="css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 <!-- Custom Theme files -->
 <script src="js/jquery-1.12.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -91,6 +92,28 @@ $error="Something went wrong. Please try again";
 .comment-text {
   margin-top: 5px;
 }
+/* rating css */
+.rating-box {
+  position: relative;
+  background: #fff;
+  padding: 25px 50px 35px;
+  border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+.rating-box .stars {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.stars i {
+  color: #e6e6e6;
+  font-size: 35px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.stars i.active {
+  color: #ff9c1a;
+}
 		</style>				
 </head>
 <body>
@@ -139,6 +162,15 @@ foreach($results as $result)
 		<div class="selectroom_top">
 			<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
 				<ul>
+				<div class="rating-box">
+      <div class="stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+    </div>
 				
 					<li class="spe">
 						<label class="inputLabel">Comment</label>
@@ -185,7 +217,38 @@ foreach($results as $result)
 							
 							<?php }}?>
 <?php }} ?>
+<script>
+  const stars = document.querySelectorAll(".stars i");
 
+  stars.forEach((star, index1) => {
+    star.addEventListener("click", () => {
+      const ratingValue = parseInt(star.getAttribute("data-rating"));
+      
+      // Send the ratingValue to the backend using the fetch API
+      fetch('rating.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rating: ratingValue }),
+      })
+      .then(response => response.text())
+      .then(message => {
+        // Handle the response from the server if needed
+        console.log(message);
+      })
+      .catch(error => {
+        // Handle any errors that may occur during the AJAX request
+        console.error('Error:', error);
+      });
+
+      // Update the frontend UI to show the selected rating
+      stars.forEach((star, index2) => {
+        index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
+      });
+    });
+  });
+</script>
 
 	</div>
 </div>
