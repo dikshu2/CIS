@@ -2,32 +2,6 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(isset($_POST['submit1']))
-{
-$fname=$_POST['fname'];
-$email=$_POST['email'];	
-$mobile=$_POST['mobileno'];
-$subject=$_POST['subject'];	
-$description=$_POST['description'];
-$sql="INSERT INTO  tblenquiry(FullName,EmailId,MobileNumber,Subject,Description) VALUES(:fname,:email,:mobile,:subject,:description)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':fname',$fname,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':mobile',$mobile,PDO::PARAM_STR);
-$query->bindParam(':subject',$subject,PDO::PARAM_STR);
-$query->bindParam(':description',$description,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Enquiry  Successfully submited";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
-
-}
 
 ?>
 <!DOCTYPE HTML>
@@ -62,27 +36,25 @@ $error="Something went wrong. Please try again";
 	</div>
 </div>
 <div class="content-section">
-                <div class="title">
+<div class="title">
                     <h1>About Us</h1>
                 </div>
                 <div class="content">
-                    <h3>Dairy products or milk products, also known as lacticinia, are food products made from milk. </h3>
-                    <p>Dairy products include common grocery store food items in the Western world such as yogurt, cheese and butter.
-                        Many dairy product are available in our dairy like milk,butter, cheese, ice cream, yogurt, condensed and dried milk and many more.
+                
+                    <p> CIS is an essential when ever we are visiting a particular city.
+                        It gives us the valuable information about the city and saves the time.  It is web based platform for the city 
+                        guide and can search every place in the city with out taking the help of any personal guide. You can search a city for its prominent places of the city user,
+                         and can get social and political information of the city, city culture,security ,entertainment, Business ,Hotels,Jobs etc.
+                        The main aim of this project services provided to the users who have registered in the site. The services regarding to city places like historical place, conventional places, 
+                        busroutes, bank,atm,college details.
                     </p>
-                    <div class="button">
-                        <a href="product.php">Explore More</a>
+                    <div class="row pt-3 ">
+                    <div class="col-lg-6  m-auto ">
+                        <button class="btn1 "> <a href="category-list.php">See More</a></button>
                     </div>
                 </div>
-                <div class="social">
-                    <a href="facebook.com"><i class="fab fa-facebook-f"></i></a>
-                    <a href=""><i class="fab fa-twitter"></i></a>
-                    <a href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="image-section">
-                <img class="img-fluid mb-3" src="Newimage/pexels-charlotte-may-5947032.jpg" style="height:400px" alt="">
-
+                <div class="image-section">
+                <img class="img-fluid mb-3" src="images/temple1.jpg" style=" height:20px"  alt="">
             </div>
                     <?php include('includes/footer.php');?>
 <!-- signup -->

@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(isset($_POST['submit2']))
 {
@@ -8,7 +8,7 @@ $pid=intval($_GET['pkgid']);
 $useremail=$_SESSION['login'];
 $comment=$_POST['comment'];
 $status=0;
-$sql="INSERT INTO tblbooking(PackageId,UserEmail,Comment,AdimReply) VALUES(:pid,:useremail,:comment,:adminreply)";
+$sql="INSERT INTO tblbooking(PackageId,UserEmail,Comment,AdminReply) VALUES(:pid,:useremail,:comment,:adminreply)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pid',$pid,PDO::PARAM_STR);
 $query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
@@ -157,18 +157,19 @@ foreach($results as $result)
 		<h3> Details</h3>
 				<p style="padding-top: 1%"><?php echo htmlentities($result->PackageDetails);?> </p>	
 				<div class="clearfix"></div>
-				<p><b> Link :</b> <?php echo htmlentities($result->link);?></p>	
+				<a><b> Link :</b> <?php echo htmlentities($result->links);?></a>	
 		</div>
 		<div class="selectroom_top">
 			<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
 				<ul>
+					
 				<div class="rating-box">
       <div class="stars">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
+	    <i class="fa-solid fa-star" data-rating="1"></i>
+        <i class="fa-solid fa-star" data-rating="2"></i>
+        <i class="fa-solid fa-star" data-rating="3"></i>
+        <i class="fa-solid fa-star" data-rating="4"></i>
+        <i class="fa-solid fa-star" data-rating="5"></i>
       </div>
     </div>
 				
@@ -217,38 +218,55 @@ foreach($results as $result)
 							
 							<?php }}?>
 <?php }} ?>
+<?php 
+$uid=intval($_GET['uid']);
+$user = "SELECT * from tblusers where Id=:id";
+$query = $dbh->prepare($user);
+$query -> bindParam(':id', $uid, PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+?>
 <script>
-  const stars = document.querySelectorAll(".stars i");
-
-  stars.forEach((star, index1) => {
-    star.addEventListener("click", () => {
-      const ratingValue = parseInt(star.getAttribute("data-rating"));
-      
-      // Send the ratingValue to the backend using the fetch API
-      fetch('rating.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ rating: ratingValue }),
-      })
-      .then(response => response.text())
-      .then(message => {
-        // Handle the response from the server if needed
-        console.log(message);
-      })
-      .catch(error => {
-        // Handle any errors that may occur during the AJAX request
-        console.error('Error:', error);
-      });
-
-      // Update the frontend UI to show the selected rating
-      stars.forEach((star, index2) => {
-        index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
-      });
-    });
+  // Use PHP to pass the value of $pid to JavaScript
+  const item_id = <?php echo $pid; ?>;
+ 
+  const user_id = <?php echo $uid; ?>;
+  // Add a click event listener to the stars
+  const stars = document.querySelectorAll('.stars i');
+  stars.forEach(star => {
+    star.addEventListener('click', handleRatingClick);
   });
+
+  // Function to handle the click event on the stars
+  function handleRatingClick(event) {
+    const selectedRating = event.target.getAttribute('data-rating');
+    console.log('Selected rating:', selectedRating);
+
+    // Use the selectedRating and item_id variables here as needed.
+    // For example, you can use JSON.stringify to send the data in an AJAX request
+    const dataToSend = {
+      rating: selectedRating,
+      item_id: item_id,
+	  user_id: user_id
+	
+
+    };
+    const jsonData = JSON.stringify(dataToSend);
+
+    // Now, you can use jsonData as needed (e.g., send it in an AJAX request)
+    console.log('JSON data to send:', jsonData);
+
+    // Update the frontend UI to show the selected rating
+    stars.forEach((star, index) => {
+      if (index < selectedRating) {
+        star.classList.add("active");
+      } else {
+        star.classList.remove("active");
+      }
+    });
+  }
 </script>
+ 
 
 	</div>
 </div>

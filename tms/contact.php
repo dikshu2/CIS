@@ -2,32 +2,6 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(isset($_POST['submit1']))
-{
-$fname=$_POST['fname'];
-$email=$_POST['email'];	
-$mobile=$_POST['mobileno'];
-$subject=$_POST['subject'];	
-$description=$_POST['description'];
-$sql="INSERT INTO  tblenquiry(FullName,EmailId,MobileNumber,Subject,Description) VALUES(:fname,:email,:mobile,:subject,:description)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':fname',$fname,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':mobile',$mobile,PDO::PARAM_STR);
-$query->bindParam(':subject',$subject,PDO::PARAM_STR);
-$query->bindParam(':description',$description,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Enquiry  Successfully submited";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
-
-}
 
 ?>
 <!DOCTYPE HTML>
@@ -84,7 +58,7 @@ $error="Something went wrong. Please try again";
                                     <textarea class="form-control bg-light" name="message" placeholder="Enter Your Message " id="msg" cols="10" rows="5" onkeyup="return Submit()" required></textarea><span id="mspan"></span>
                                 </div>
                             </div>
-                            <input type="submit" value="Submit" name="submit" style="background-color: pink;" onclick="return Submit()">
+                            <input type="submit" value="Submit" name="submit" style="background-color: #34ad00;" onclick="return Submit()">
                         </form>
                     </div>
                     <?php include('includes/footer.php');?>

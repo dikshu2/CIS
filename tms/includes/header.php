@@ -76,7 +76,7 @@
 								<li><a href="/tms/tms/event.php">Event</a></li>
 								<li><a href="/tms/tms/category-list.php">Category</a></li>
 								<li><a href="/tms/tms/chat/index.php">Chat</a></li>
-								<li><a href="/tms/tms/page.php?type=terms">Map</a></li>
+								<li><a href="/tms/tms/user1.php">Map</a></li>
 								<!-- <li><a href="page.php?type=contact">Contact Us</a></li> -->
 								<?php if($_SESSION['login'])
 {?>

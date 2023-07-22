@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
 	{	
@@ -23,7 +23,7 @@ $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
 $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
 $query->bindParam(':pcategory',$pcategory,PDO::PARAM_INT);
 $query->bindParam(':pimage',$pimage,PDO::PARAM_STR);
-$query->bindParam(':plinks',$plinks,PDO::PARAM_INT);
+$query->bindParam(':plinks',$plinks,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)

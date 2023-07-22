@@ -1,8 +1,8 @@
 <?php
 include("configuration.php");
 session_start();
-error_reporting();
-ini_set('display_errors', 1);
+error_reporting(0);
+
 
 // if(!isset($_SESSION['login']))
 // {
@@ -63,11 +63,6 @@ $name=$b['FullName'];
 		<h1 class="wow zoomIn animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: zoomIn;"> CIS - City Information System</h1>
 	</div>
 </div>
-
-
-
-
-
 <span class="heading"><b>Welcome</b> <?php echo $name;?></span><span style="float:right">
 <img src="images/download.png" height="50" width="100"  type="hidden"/></a></span>
 <hr style="border:6px dotted #63C;"/><br />

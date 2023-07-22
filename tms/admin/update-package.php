@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
 	{	
@@ -14,16 +14,16 @@ $pcategory = $_POST['category'];
 $pname=$_POST['packagename'];
 $plocation=$_POST['packagelocation'];
 $pdetails=$_POST['packagedetails'];	
-$plinks=$_POST['link'];	
+$plinks=$_POST['links'];	
 // $pimage=$_FILES["packageimage"]["name"];
-$sql="update TblTourPackages set PackageName=:pname,PackageLocation=:plocation,PackageDetails=:pdetails,CategoryId=:pcategory links=:plink where PackageId=:pid";
+$sql="update TblTourPackages set PackageName=:pname,PackageLocation=:plocation,PackageDetails=:pdetails,CategoryId=:pcategory, links=:plinks where PackageId=:pid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pname',$pname,PDO::PARAM_STR);
 $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
 $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
 $query->bindParam(':pcategory',$pcategory,PDO::PARAM_STR);
 $query->bindParam(':pid',$pid,PDO::PARAM_STR);
-$query->bindParam(':plink',$plinks,PDO::PARAM_STR);
+$query->bindParam(':plinks',$plinks,PDO::PARAM_STR);
 $query->execute();
 $msg="Place Updated Successfully";
 }
@@ -130,7 +130,8 @@ $cnt=1;
 <div class="form-group">
 									<label for="focusedinput" class="col-sm-2 control-label"> Location</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control1" name="packagelocation" id="packagelocation" placeholder=" Package Location" value="<?php echo htmlentities($result->PackageLocation);?>" required>
+										<input type="text" class="form-control1" name="packagelocation" id="packagelocation" 
+										placeholder=" Package Location" value="<?php echo htmlentities($result->PackageLocation);?>" required>
 									</div>
 								</div>
 <div class="form-group">
@@ -156,7 +157,7 @@ $cnt=1;
 								<div class="form-group">
 									<label for="focusedinput" class="col-sm-2 control-label"> Link</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control1" name="link" id="link" placeholder=" Place Link" required>
+										<input type="text" class="form-control1" name="links" id="links" placeholder=" Place Link" value="<?php echo htmlentities($result->links);?>" required>
 									</div>
 								</div>													
 <div class="form-group">
