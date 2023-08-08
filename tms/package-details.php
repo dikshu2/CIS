@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/config.php');
 if(isset($_POST['submit2']))
 {
@@ -154,15 +154,21 @@ foreach($results as $result)
 				<p class="dow">#PKG-<?php echo htmlentities($result->PackageId);?></p>
 				<p><b> Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>			
 			</div>
+      <div class="col-md-4 selectroom_left wow fadeInLeft animated" data-wow-delay=".5s">
+      <div class="mapouter"><div class="gmap_canvas"><iframe class="gmap_iframe" width="100%" frameborder="0" scrolling="no" marginheight="0"
+       marginwidth="0" src="<?php echo htmlentities($result->source);?>">
+       </iframe><a href="https://connectionsgame.org/">Connections Game</a></div><style>.mapouter{position:relative;text-align:right;width:100%;height:400px;}.gmap_canvas
+       {overflow:hidden;background:none!important;width:100%;height:400px;}.gmap_iframe {height:400px!important;}</style></div>
+      </div>
 		<h3> Details</h3>
 				<p style="padding-top: 1%"><?php echo htmlentities($result->PackageDetails);?> </p>	
 				<div class="clearfix"></div>
-				<a><b> Link :</b> <?php echo htmlentities($result->links);?></a>	
+				<a href="<?php echo htmlentities($result->links);?>" target="_blank"><b> Visit Website: <?php echo htmlentities($result->links);?></a>	
 		</div>
 		<div class="selectroom_top">
 			<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
 				<ul>
-					
+					<?php if($_SESSION['login']){?>
 				<div class="rating-box">
       <div class="stars">
 	    <i class="fa-solid fa-star" data-rating="1"></i>
@@ -172,6 +178,18 @@ foreach($results as $result)
         <i class="fa-solid fa-star" data-rating="5"></i>
       </div>
     </div>
+    <?php }else{?>
+      <a href="#" data-toggle="modal" data-target="#myModal4" class="btn-primary btn" >
+      <div class="rating-box">
+      <div class="stars">
+	    <i class="fa-solid fa-star" data-rating="1"></i>
+        <i class="fa-solid fa-star" data-rating="2"></i>
+        <i class="fa-solid fa-star" data-rating="3"></i>
+        <i class="fa-solid fa-star" data-rating="4"></i>
+        <i class="fa-solid fa-star" data-rating="5"></i>
+      </div>
+    </div>
+      </a><?php }?>
 				
 					<li class="spe">
 						<label class="inputLabel">Comment</label>
@@ -218,18 +236,9 @@ foreach($results as $result)
 							
 							<?php }}?>
 <?php }} ?>
-<?php 
-$uid=intval($_GET['uid']);
-$user = "SELECT * from tblusers where Id=:id";
-$query = $dbh->prepare($user);
-$query -> bindParam(':id', $uid, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-?>
 <script>
   // Use PHP to pass the value of $pid to JavaScript
   const item_id = <?php echo $pid; ?>;
- 
   const user_id = <?php echo $uid; ?>;
   // Add a click event listener to the stars
   const stars = document.querySelectorAll('.stars i');

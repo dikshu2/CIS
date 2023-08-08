@@ -14,9 +14,10 @@ $plocation=$_POST['packagelocation'];
 $pdetails=$_POST['packagedetails'];	
 $pcategory=$_POST['category'];
 $plinks=$_POST['links'];
+$psource=$_POST['source'];
 $pimage=$_FILES["packageimage"]["name"];
 move_uploaded_file($_FILES["packageimage"]["tmp_name"],"pacakgeimages/".$_FILES["packageimage"]["name"]);
-$sql="INSERT INTO tbltourpackages(PackageName,PackageLocation,PackageDetails,CategoryId,PackageImage,links) VALUES(:pname,:plocation,:pdetails,:pcategory,:pimage,:plinks)";
+$sql="INSERT INTO tbltourpackages(PackageName,PackageLocation,PackageDetails,CategoryId,PackageImage,links,source) VALUES(:pname,:plocation,:pdetails,:pcategory,:pimage,:plinks,:psource)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pname',$pname,PDO::PARAM_STR);
 $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
@@ -24,6 +25,7 @@ $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
 $query->bindParam(':pcategory',$pcategory,PDO::PARAM_INT);
 $query->bindParam(':pimage',$pimage,PDO::PARAM_STR);
 $query->bindParam(':plinks',$plinks,PDO::PARAM_STR);
+$query->bindParam(':psource',$psource,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
@@ -149,6 +151,12 @@ $error="Something went wrong. Please try again";
 									<label for="focusedinput" class="col-sm-2 control-label"> Link</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control1" name="links" id="links" placeholder=" Place Link" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="focusedinput" class="col-sm-2 control-label">Map Source:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control1" name="source" id="source" placeholder=" Place Source" required>
 									</div>
 								</div>
 <div class="form-group">
