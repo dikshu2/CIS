@@ -11,8 +11,8 @@ else{
 if(isset($_REQUEST['bkid']))
 	{
 $bid=intval($_GET['bkid']);
-$status=1;
-
+$status=2;
+$cancelby='a';
 $sql = "UPDATE tblbooking SET status=:status,CancelledBy=:cancelby WHERE  BookingId=:bid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
@@ -146,13 +146,15 @@ popUpWin = open(URLStr,'popUpWin', 'toolbar=no,location=no,directories=no,status
 							<th>Email Id</th>
 							<th>Name </th>
 							<th>Comment </th>
+							<th>View</th>
+							<th>Status</th>
 							<th>Action </th>
 						  </tr>
 						</thead>
 						<tbody>
 <?php $sql = "SELECT tblbooking.BookingId as bookid,tblusers.FullName as fname,tblusers.MobileNumber
  as mnumber,tblusers.EmailId as email,tbltourpackages.PackageName as pckname,tblbooking.PackageId 
-   as tdate,tblbooking.Comment as comment from tblusers join  tblbooking on  tblbooking.UserEmail=tblusers.EmailId join tbltourpackages on 
+   as tdate,tblbooking.Comment as comment, tblbooking.status as status from tblusers join  tblbooking on  tblbooking.UserEmail=tblusers.EmailId join tbltourpackages on 
    tbltourpackages.PackageId=tblbooking.PackageId";
 $query = $dbh -> prepare($sql);
 $query->execute();
@@ -169,11 +171,34 @@ foreach($results as $result)
 							<td><?php echo htmlentities($result->email);?></td>
 							<td><a href="update-package.php?pid=<?php echo htmlentities($result->pid);?>"><?php echo htmlentities($result->pckname);?></a></td>
 								<td><?php echo htmlentities($result->comment);?></td>
-								<td><a href="javascript:void(0);" onClick="popUpWindow('updatecomment.php?iid=<?php echo ($result->bookid);?>');">View </a>
-</td>
+								<td><a href="javascript:void(0);" onClick="popUpWindow('updatecomment.php?iid=<?php echo ($result->bookid);?>');">View </a></td>
 								
-</td>
+<td><?php if($result->status==0)
+{
+echo "Pending";
+}
+if($result->status==1)
+{
+echo "Confirmed";
+}
+if($result->status==2 and  $result->cancelby=='a')
+{
+echo "Canceled by you at " .$result->upddate;
+} 
+if($result->status==2 and $result->cancelby=='u')
+{
+echo "Canceled by User at " .$result->upddate;
 
+}
+?></td>
+
+<?php if($result->status==2){
+	?><td>Cancelled</td>
+<?php } else if($result->status==1){
+	?><td> Confirmed </td>
+<?php }else {?>
+<td><a href="manage-bookings.php?bkid=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Do you really want to cancel comment?')" >Cancel</a> / <a href="manage-bookings.php?bckid=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Booking has been confirm')" >Confirm</a></td>
+<?php }?>
 
 						  </tr>
 						 <?php $cnt=$cnt+1;} }?>

@@ -1,19 +1,18 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(isset($_POST['submit2']))
 {
 $pid=intval($_GET['pkgid']);
-$useremail=$_SESSION['login'];
+$useremail=$_SESSION['login']; 
 $comment=$_POST['comment'];
 $status=0;
-$sql="INSERT INTO tblbooking(PackageId,UserEmail,Comment,AdminReply) VALUES(:pid,:useremail,:comment,:adminreply)";
+$sql="INSERT INTO tblbooking(PackageId,UserEmail,Comment) VALUES(:pid,:useremail,:comment)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pid',$pid,PDO::PARAM_STR);
 $query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
 $query->bindParam(':comment',$comment,PDO::PARAM_STR);
-$query->bindParam(':adminreply',$status,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
@@ -143,7 +142,7 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 {	?>
-
+ <!-- rating -->
 <form name="book" method="post">
 		<div class="selectroom_top">
 			<div class="col-md-4 selectroom_left wow fadeInLeft animated" data-wow-delay=".5s">
@@ -156,19 +155,49 @@ foreach($results as $result)
 			</div>
       <div class="col-md-4 selectroom_left wow fadeInLeft animated" data-wow-delay=".5s">
       <div class="mapouter"><div class="gmap_canvas"><iframe class="gmap_iframe" width="100%" frameborder="0" scrolling="no" marginheight="0"
-       marginwidth="0" src="<?php echo htmlentities($result->source);?>">
+       marginwidth="0" src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=<?php echo htmlentities($result->source);?>&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
        </iframe><a href="https://connectionsgame.org/">Connections Game</a></div><style>.mapouter{position:relative;text-align:right;width:100%;height:400px;}.gmap_canvas
        {overflow:hidden;background:none!important;width:100%;height:400px;}.gmap_iframe {height:400px!important;}</style></div>
       </div>
+     
 		<h3> Details</h3>
 				<p style="padding-top: 1%"><?php echo htmlentities($result->PackageDetails);?> </p>	
 				<div class="clearfix"></div>
-				<a href="<?php echo htmlentities($result->links);?>" target="_blank"><b> Visit Website: <?php echo htmlentities($result->links);?></a>	
-		</div>
+				<a href="<?php echo htmlentities($result->links);?>" target="_blank"><b> Visit Website: <?php echo htmlentities($result->links);?></a>	<br>
+
+	
+    <?php
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    
+    // Fetch individual ratings
+    $sql = "SELECT * FROM ratings where item_id=$pid";
+    $result = $conn->query($sql);
+    
+    // Calculate average rating
+    $averageRating = 0;
+    $totalCount = 0;
+    
+    while ($row = $result->fetch_assoc()) {
+        $rating = $row["rating"];
+        $averageRating += $rating;
+        $totalCount++;
+    }
+    
+    if ($totalCount > 0) {
+        $averageRating /= $totalCount;
+       
+    }
+   
+    // Close the connection
+    $conn->close();
+    ?>
+     </div>
 		<div class="selectroom_top">
 			<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
 				<ul>
-					<?php if($_SESSION['login']){?>
 				<div class="rating-box">
       <div class="stars">
 	    <i class="fa-solid fa-star" data-rating="1"></i>
@@ -177,20 +206,9 @@ foreach($results as $result)
         <i class="fa-solid fa-star" data-rating="4"></i>
         <i class="fa-solid fa-star" data-rating="5"></i>
       </div>
-    </div>
-    <?php }else{?>
-      <a href="#" data-toggle="modal" data-target="#myModal4" class="btn-primary btn" >
-      <div class="rating-box">
-      <div class="stars">
-	    <i class="fa-solid fa-star" data-rating="1"></i>
-        <i class="fa-solid fa-star" data-rating="2"></i>
-        <i class="fa-solid fa-star" data-rating="3"></i>
-        <i class="fa-solid fa-star" data-rating="4"></i>
-        <i class="fa-solid fa-star" data-rating="5"></i>
-      </div>
-    </div>
-      </a><?php }?>
-				
+        </div>
+        <div><?php  echo "Average Rating: " . round($averageRating, 2);?></div>
+    
 					<li class="spe">
 						<label class="inputLabel">Comment</label>
 						<input class="special" type="text" name="comment" required="">
@@ -216,7 +234,7 @@ foreach($results as $result)
 		$sql = "SELECT tblusers.FullName as fname, tblbooking.Comment as cmt,tblbooking.AdminReply as adminReply
 				FROM tblusers
 				INNER JOIN tblbooking ON tblbooking.UserEmail = tblusers.EmailId
-				WHERE tblbooking.PackageId = :packageId";
+				WHERE tblbooking.PackageId = :packageId And tblbooking.status=1";
 $query = $dbh->prepare($sql);
 $query->bindParam(':packageId', $packageId, PDO::PARAM_INT);
 $query->execute();
@@ -237,35 +255,44 @@ foreach($results as $result)
 							<?php }}?>
 <?php }} ?>
 <script>
-  // Use PHP to pass the value of $pid to JavaScript
+  // Use PHP to pass the value of $pid and 'login' session variable to JavaScript
   const item_id = <?php echo $pid; ?>;
-  const user_id = <?php echo $uid; ?>;
-  // Add a click event listener to the stars
+  const loginSession = <?php echo json_encode($_SESSION['login']); ?>; // Properly encode the session variable
+
   const stars = document.querySelectorAll('.stars i');
   stars.forEach(star => {
     star.addEventListener('click', handleRatingClick);
   });
 
-  // Function to handle the click event on the stars
   function handleRatingClick(event) {
     const selectedRating = event.target.getAttribute('data-rating');
     console.log('Selected rating:', selectedRating);
 
-    // Use the selectedRating and item_id variables here as needed.
-    // For example, you can use JSON.stringify to send the data in an AJAX request
     const dataToSend = {
       rating: selectedRating,
       item_id: item_id,
-	  user_id: user_id
-	
-
+      login: loginSession // Include the 'login' session variable
     };
     const jsonData = JSON.stringify(dataToSend);
-
-    // Now, you can use jsonData as needed (e.g., send it in an AJAX request)
     console.log('JSON data to send:', jsonData);
 
-    // Update the frontend UI to show the selected rating
+    // Send the rating data to the server using an AJAX request
+    fetch('rating.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonData, // Send the JSON data in the request body
+    })
+    .then(response => response.text())
+    .then(message => {
+      // Handle the response from the server if needed
+      console.log('Response from server:', message);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
     stars.forEach((star, index) => {
       if (index < selectedRating) {
         star.classList.add("active");
@@ -275,6 +302,9 @@ foreach($results as $result)
     });
   }
 </script>
+
+</script>
+
  
 
 	</div>

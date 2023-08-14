@@ -1,5 +1,28 @@
-<?php if($_SESSION['login'])
+<?php 
+
+if($_SESSION['login'])
 {?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+
+.notification-badge {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    background-color: red;
+    color: white;
+    padding: 2px;
+    width: 16px; /* Adjust the width */
+    height: 16px; /* Adjust the height */
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+</style>
 <div class="top-header">
 	<div class="container">
 		<ul class="tp-hd-lft wow fadeInLeft animated" data-wow-delay=".5s">
@@ -10,6 +33,27 @@
 			<li class="prnt"><a href="/tms/tms/tour-history.php">My Booking History</a></li>
 			<li class="prnt"><a href="/tms/tms/customereventhistory.php">User registered details</a></li>
 			<li class="prnt"><a href="/tms/tms/issuetickets.php">Issue Tickets</a></li>
+			<button id="notification-button" style="background-color: #3F84B1; border: none; height:2px;">
+    <a href="notification.php">
+        <i class="fas fa-bell"></i>
+		
+        <?php
+        $uemail = $_SESSION['login'];
+	
+		$sqlUnseenCount = "SELECT COUNT(*) AS unseen_count FROM notification WHERE UserEmail = :uemail AND seen = 0";
+		$queryUnseenCount = $dbh->prepare($sqlUnseenCount);
+		$queryUnseenCount->bindParam(':uemail', $uemail, PDO::PARAM_STR);
+		$queryUnseenCount->execute();
+		$unseenCountRow = $queryUnseenCount->fetch(PDO::FETCH_ASSOC);
+		$unseenCount = $unseenCountRow['unseen_count'];
+        if ($unseenCount > 0) { ?>
+            <span class="notification-badge"><?php echo $unseenCount; ?></span>
+        <?php } ?>
+    </a>
+</button>
+
+	
+			
 		</ul>
 		<ul class="tp-hd-rgt wow fadeInRight animated" data-wow-delay=".5s"> 
 			<li class="tol">Welcome :</li>				
@@ -70,13 +114,15 @@
 					<nav class="cl-effect-1">
 						<ul class="nav navbar-nav">
 							<li><a href="/tms/tms/index.php">Home</a></li>
-							<li><a href="/tms/tms/contact.php">Contact us</a></li>
-							<li><a href="/tms/tms/about.php">About Us</a></li>
+							<!-- <li><a href="/tms/tms/contact.php">Contact us</a></li> -->
+							
 							<!-- <li><a href="page.php?type=aboutus">About</a></li> -->
+							<li><a href="/tms/tms/chat/index.php">Chat</a></li>
 								<li><a href="/tms/tms/event.php">Event</a></li>
 								<li><a href="/tms/tms/category-list.php">Category</a></li>
-								<li><a href="/tms/tms/chat/index.php">Chat</a></li>
+								
 								<li><a href="/tms/tms/user1.php">Map</a></li>
+								<li><a href="/tms/tms/about.php">About Us</a></li>
 								<!-- <li><a href="page.php?type=contact">Contact Us</a></li> -->
 								<?php if($_SESSION['login'])
 {?>
@@ -84,6 +130,9 @@
 								<?php } else { ?>
 								<li><a href="tms/tms/enquiry.php"> Enquiry </a>  </li>
 								<?php } ?>
+								<li>
+                                
+                            </li>
 								<div class="clearfix"></div>
 
 						</ul>
@@ -95,3 +144,26 @@
 		<div class="clearfix"></div>
 	</div>
 </div>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+    const notificationButton = document.getElementById("notification-button");
+    const modal = document.getElementById("notification-modal");
+    const messageContent = document.getElementById("notification-message");
+    const closeButton = document.querySelector(".close-button");
+
+    notificationButton.addEventListener("click", function () {
+        // Replace this with your logic to fetch the message from the database
+        const messageFromDatabase = "This is a notification message from the database.";
+        
+        messageContent.textContent = messageFromDatabase;
+        modal.classList.remove("hidden");
+    });
+
+    closeButton.addEventListener("click", function () {
+        modal.classList.add("hidden");
+    });
+});
+
+</script>
+
+

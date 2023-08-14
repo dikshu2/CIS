@@ -12,13 +12,13 @@ if(isset($_POST['submit2']))
   {
 $remark=$_POST['remark'];
 
-$sql = "UPDATE tblbooking SET AdminReply=:remark WHERE  bookingid=:iid";
+$sql = "UPDATE tblbooking SET AdminReply=:remark WHERE  BookingId=:iid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':remark',$remark, PDO::PARAM_STR);
 $query-> bindParam(':iid',$iid, PDO::PARAM_STR);
 $query -> execute();
 
-$msg="Reply  successfully Updated";
+$msg="Remark  successfully Updated";
 }
 
 
@@ -49,9 +49,12 @@ window.print();
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
     <tr height="50">
-      <td colspan="2" class="fontkink2" style="padding-left:0px;"><div class="fontpink2"> <b>Update Reply !</b></div></td>
+      <td colspan="2" class="fontkink2" style="padding-left:0px;"><div class="fontpink2"> <b>Update Remark !</b></div></td>
       
     </tr>
+
+
+   
 
       <tr>
       <td colspan="2">  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
@@ -61,7 +64,7 @@ window.print();
 
             <tbody>
 <?php 
-$sql = "SELECT * from tblbooking where bookingid=:iid";
+$sql = "SELECT * from tblbooking where BookingId=:iid";
 $query = $dbh -> prepare($sql);
 $query-> bindParam(':iid',$iid, PDO::PARAM_STR);
 $query->execute();
@@ -77,7 +80,7 @@ foreach($results as $result)
 ?>
 
      <tr style=''>
-      <td class="fontkink1" >Reply:</td>
+      <td class="fontkink1" >Remark:</td>
       <td class="fontkink" align="justify" ><span class="fontkink">
         <textarea cols="50" rows="7" name="remark" required="required" ></textarea>
         </span></td>
@@ -92,11 +95,11 @@ foreach($results as $result)
     </tr> 
     <?php } else { ?>
      <tr>
-      <td class="fontkink1" ><b>Reply:</b></td>
+      <td class="fontkink1" ><b>Remark:</b></td>
       <td class="fontkink" align="justify" ><?php echo htmlentities($result->AdminReply);?></td>
     </tr>
     <tr>
-      <td class="fontkink1" ><b>Reply Date:</b></td>
+      <td class="fontkink1" ><b>Remark Date:</b></td>
       <td class="fontkink" align="justify" ><?php echo htmlentities($result->AdminReplyDate);?></td>
     </tr>
     <?php }}}?>

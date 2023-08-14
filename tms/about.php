@@ -50,7 +50,7 @@ include('includes/config.php');
                     </p>
                     <div class="row pt-3 ">
                     <div class="col-lg-6  m-auto ">
-                        <button class="btn1 "> <a href="category-list.php">See More</a></button>
+                        <button class="btn1 " style="background-color: #34ad00; "> <a href="category-list.php">See More</a></button>
                     </div>
                 </div>
                 <div class="image-section">

@@ -99,11 +99,5 @@ $r=mysqli_query($al,"SELECT * FROM message WHERE sender='$email' ORDER BY id DES
 </div>
 
 </body>
-<!-- 
-Property of Tech Vegan Not For Sell/Not for Selling through any Blog/Website
-Designed &amp; Developed by:
-								Ashish Labade - https://www.ashishvegan.com 
-                                Tech Vegan YouTube Channel Link: https://bit.ly/2MFT35Q
-                                Copyright 2020 - Tech Vegan
--->
+
 </html>

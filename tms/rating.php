@@ -1,29 +1,35 @@
 <?php
 include('includes/config.php');
 error_reporting(E_ALL);
-echo $_POST['user_id'];
-// Check connection
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle the rating data sent from the frontend
-if (isset($_POST['item_id']) && isset($_POST['rating'])) {
-    $item_id = $_POST['item_id'];
-    $user_id = (isset($_POST['user_id'])) ? $_POST['user_id'] : null;
-    $rating = $_POST['rating'];
-    echo $rating;
+  
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Decode the JSON data sent from the frontend
+    $requestData = json_decode(file_get_contents('php://input'), true);
 
-    // Insert the rating data into the 'ratings' table
-    $sql = "INSERT INTO ratings (item_id, user_id, rating) VALUES ('$item_id', '$user_id', '$rating')";
-    echo $sql;
-    if ($conn->query($sql) === true) {
-        echo "Rating added successfully!";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    if ($requestData) {
+        $rating = $requestData['rating'];
+        $item_id = $requestData['item_id'];
+        $UserEmail = $requestData['login'];
     }
+    $sql = "INSERT INTO ratings(item_id, userEmail, rating) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isi", $item_id, $UserEmail, $rating);
+    
+        if ($stmt->execute()) {
+            echo "Rating added successfully!";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+    
+        $stmt->close();
+    
+    $conn->close();
+    echo "helooo";
 }
 
-// Close the database connection
-$conn->close();
 ?>

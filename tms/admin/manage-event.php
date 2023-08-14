@@ -201,8 +201,43 @@ echo "Canceled by User at " .$result->upddate;
 					  </table>
 					</div>
 				  </table>
+<?php
 
-				
+$sql= "SELECT UserEmail from tblevent";
+$query = $dbh->prepare($sql);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if ($query->rowCount() > 0) {
+    foreach ($results as $result1) {
+        $email = htmlentities($result1->UserEmail);
+        
+        // Assuming you've defined $conn as your database connection object
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        
+        $notificationMessage = "";
+        if ($result->status == 1) {
+            $notificationMessage = 'Your Event has been confirmed by admin';
+        } elseif ($result->status == 2) {
+            $notificationMessage = 'Your Event has been canceled by admin';
+        }
+        
+       // Create and execute the insertion statement
+	   $sql = "INSERT INTO notification (message,seen, useremail) VALUES (?, 'false',?)";
+	   $insertStatement = $conn->prepare($sql);
+
+	   if (!$insertStatement) {
+		   // Handle prepare error
+		   die("Prepare error: " . $conn->error);
+	   }
+
+	   $insertStatement->bind_param('ss', $notificationMessage, $email);
+
+   }
+}
+?>
 			</div>
 <!-- script-for sticky-nav -->
 		<script>
@@ -264,4 +299,4 @@ echo "Canceled by User at " .$result->upddate;
 
 </body>
 </html>
-<?php } ?>
+<?php }?>

@@ -111,7 +111,7 @@ foreach($results as $result)
 <?php }} ?>
 			
 		
-<div><a href="package-list.php" class="view">View More</a></div>
+<div><a href="category-list.php" class="view">View More</a></div>
 </div>
 			<div class="clearfix"></div>
 	</div>

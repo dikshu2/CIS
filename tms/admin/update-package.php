@@ -15,8 +15,9 @@ $pname=$_POST['packagename'];
 $plocation=$_POST['packagelocation'];
 $pdetails=$_POST['packagedetails'];	
 $plinks=$_POST['links'];	
+$psource=$_POST['source'];
 // $pimage=$_FILES["packageimage"]["name"];
-$sql="update TblTourPackages set PackageName=:pname,PackageLocation=:plocation,PackageDetails=:pdetails,CategoryId=:pcategory, links=:plinks where PackageId=:pid";
+$sql="update TblTourPackages set PackageName=:pname,PackageLocation=:plocation,PackageDetails=:pdetails,CategoryId=:pcategory, links=:plinks,source=:psource where PackageId=:pid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':pname',$pname,PDO::PARAM_STR);
 $query->bindParam(':plocation',$plocation,PDO::PARAM_STR);
@@ -24,6 +25,7 @@ $query->bindParam(':pdetails',$pdetails,PDO::PARAM_STR);
 $query->bindParam(':pcategory',$pcategory,PDO::PARAM_STR);
 $query->bindParam(':pid',$pid,PDO::PARAM_STR);
 $query->bindParam(':plinks',$plinks,PDO::PARAM_STR);
+$query->bindParam(':psource',$psource,PDO::PARAM_STR);
 $query->execute();
 $msg="Place Updated Successfully";
 }
@@ -159,7 +161,13 @@ $cnt=1;
 									<div class="col-sm-8">
 										<input type="text" class="form-control1" name="links" id="links" placeholder=" Place Link" value="<?php echo htmlentities($result->links);?>" required>
 									</div>
-								</div>													
+								</div>	
+								<div class="form-group">
+									<label for="focusedinput" class="col-sm-2 control-label">Map Source:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control1" name="source" id="source" placeholder=" Place Source" value="<?php echo htmlentities($result->source);?>" required>
+									</div>
+								</div>												
 <div class="form-group">
 <label for="focusedinput" class="col-sm-2 control-label">Image</label>
 <div class="col-sm-8">

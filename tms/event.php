@@ -9,8 +9,6 @@ $eventseat=$_POST['seat'];
 $comment=$_POST['comment'];
 $eventid=$_POST['eid'];
 $status=0;
-
-
 $selectSql = "SELECT audience_capacity FROM tblevent WHERE EventId = :eid";
 $selectQuery = $dbh->prepare($selectSql);
 $selectQuery->bindParam(':eid', $eventid, PDO::PARAM_INT);

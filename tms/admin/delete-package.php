@@ -10,26 +10,27 @@ if (strlen($_SESSION['alogin']) == 0) {
         $cid = intval($_GET['pid']);
 
         if (isset($_POST['confirm'])) {
-          
+            // Delete associated records from the ratings table
+            $deleteRatingsSql = "DELETE FROM ratings WHERE item_id = $cid";
+            mysqli_query($conn, $deleteRatingsSql);
 
-            // Delete the category
+            // Delete the category from tbltourpackages once associated records are deleted
             $deleteCategorySql = "DELETE FROM tbltourpackages WHERE PackageId = $cid";
             mysqli_query($conn, $deleteCategorySql);
 
-            // // Enable foreign key checks
-            // mysqli_query($conn, 'SET FOREIGN_KEY_CHECKS=1');
+            $msg = "Place and associated records deleted successfully.";
 
-            $msg = "Places deleted successfully.";
             $_SESSION['success'] = $msg;
-            header('location: manage-category.php');
+            header('location: manage-package.php');
             exit();
         }
     } else {
-        header('location: manage-category.php');
+        header('location: manage-package.php');
         exit();
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html>

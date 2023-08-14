@@ -26,6 +26,7 @@ include('includes/config.php');
 		 new WOW().init();
 	</script>
 <!--//end-animate-->
+
 </head>
 <body>
 <?php include('includes/header.php');?>
@@ -42,11 +43,24 @@ include('includes/config.php');
 		
 		<div class="room-bottom">
 			<h3>Category List</h3>
-
+			<form class="navbar-form" method="POST" action="" id="searchForm">
+                                    <div class="search">
+                                        <input class="px-2 search" type="search" name="searchTerm" id="searchTerm" placeholder="Search..." aria-label="Search" style="color: black";>
+                                        <button type="submit" name="search"  id="searchbtn" style="background-color: #34ad00;">Go</button>
+										<a href="package-list.php?cid=<?php echo htmlentities($result->CategoryId);?>"></a>
+                                    </div>
+                                </form>
+                                <div id="searchResults"></div>
 					
-<?php $sql = "SELECT * from tblcategory";
+<?php 
+$searchTerm = '%%'; // Initialize the variable
+if (isset($_POST['search'])) {
+    $searchTerm = '%' . $_POST['searchTerm'] . '%';
+}
+$sql = "SELECT * from tblcategory where CategoryName Like :searchTerm";
 $useremail=$_SESSION['login'];
 $query = $dbh->prepare($sql);
+$query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;

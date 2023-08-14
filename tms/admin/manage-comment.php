@@ -11,16 +11,32 @@ else{
 if(isset($_REQUEST['cid']))
 	{
 $eid=intval($_GET['cid']);
-$status=1;
-
+$status=2;
+$cancelby='a';
 $sql = "UPDATE tblcomment SET Status=:status WHERE  comment_id=:cid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query-> bindParam(':cid',$cid, PDO::PARAM_STR);
 $query -> execute();
 
-$msg="Comment  successfully read";
-}?>
+$msg="Comment  canclled";
+}
+
+if(isset($_REQUEST['cid']))
+	{
+$eid=intval($_GET['cid']);
+$status=1;
+$cancelby='a';
+$sql = "UPDATE tblcomment SET Status=:status WHERE  comment_id=:cid";
+$query = $dbh->prepare($sql);
+$query -> bindParam(':status',$status, PDO::PARAM_STR);
+$query-> bindParam(':cid',$cid, PDO::PARAM_STR);
+$query -> execute();
+
+$msg="Comment  confirmed";
+}
+
+?>
 <!DOCTYPE HTML>
 <html>
 <head>

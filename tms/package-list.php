@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -42,14 +43,34 @@ include('includes/config.php');
 		
 		<div class="room-bottom">
 			<h3>Place List</h3>
-
-					
+			<form class="navbar-form" method="POST" action="" id="searchForm">
+                                    <div class="search">
+                                        <input class="px-2 search" type="search" name="searchTerm" id="searchTerm" placeholder="Search..." aria-label="Search" style="color: black";>
+                                        <button type="submit" name="search"  id="searchbtn" style="background-color: #34ad00;">Go</button>
+                                    </div>
+                                </form>
+                                <div id="searchResults"></div>	
 <?php
-$cid = $_GET['cid'];
- $sql = "SELECT * from tbltourpackages where CategoryId=$cid";
+$searchTerm = '%%'; // Initialize the variable
+if (isset($_POST['search'])) {
+    $searchTerm = '%' . $_POST['searchTerm'] . '%';
+}
+
+$categoryId = $_GET['cid'];
+
+
+// Prepare the SQL query
+$sql = "SELECT * FROM tbltourpackages WHERE CategoryId = :categoryId AND PackageName LIKE :searchTerm";
 $query = $dbh->prepare($sql);
+
+// Bind parameters
+$query->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+$query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
+
+// Execute the query
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
+
 $cnt=1;
 if($query->rowCount() > 0)
 {

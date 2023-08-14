@@ -10,6 +10,10 @@ if (strlen($_SESSION['alogin']) == 0) {
         $cid = intval($_GET['cid']);
 
         if (isset($_POST['confirm'])) {
+             // Delete associated records from the ratings table
+             $deleteRatingsSql = "DELETE FROM ratings WHERE item_id = $cid";
+             mysqli_query($conn, $deleteRatingsSql);
+             
             // Delete the related packages
             $deletePackagesSql = "DELETE FROM tbltourpackages WHERE CategoryId = $cid";
             mysqli_query($conn, $deletePackagesSql);
