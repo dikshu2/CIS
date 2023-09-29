@@ -70,7 +70,7 @@ foreach($results as $result)
 {	?>
 			<div class="rom-btm">
 				<div class="col-md-3 room-left wow fadeInLeft animated" data-wow-delay=".5s">
-					<img src="admin/categoryimages/<?php echo htmlentities($result->CategoryImage);?>" class="img-responsive" style="width:2in; height:2in;  display:flex;" alt="">
+					<img src="admin/categoryimages/<?php echo htmlentities($result->CategoryImage);?>" class="img-responsive"   style="display:flex;" alt="">
 				</div>
 				<div class="col-md-6 room-midle wow fadeInUp animated" data-wow-delay=".5s">
 					<h4>Category Name: <?php echo htmlentities($result->CategoryName);?></h4>

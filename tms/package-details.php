@@ -150,7 +150,7 @@ foreach($results as $result)
 			</div>
 			<div class="col-md-8 selectroom_right wow fadeInRight animated" data-wow-delay=".5s">
 				<h2><?php echo htmlentities($result->PackageName);?></h2>
-				<p class="dow">#PKG-<?php echo htmlentities($result->PackageId);?></p>
+				<p class="dow">#Place-<?php echo htmlentities($result->PackageId);?></p>
 				<p><b> Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>			
 			</div>
       <div class="col-md-4 selectroom_left wow fadeInLeft animated" data-wow-delay=".5s">
@@ -171,10 +171,22 @@ foreach($results as $result)
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    
+    $useremail=$_SESSION['login']; 
+    $ratings = []; // Initialize an array to store ratings
+$sql = "SELECT rating FROM ratings WHERE item_id = :pid AND UserEmail=:userEmail";
+$query = $dbh->prepare($sql);
+$query->bindParam(':pid', $pid, PDO::PARAM_STR);
+$query->bindParam(':userEmail', $useremail, PDO::PARAM_STR);
+$query->execute();
+
+while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+    $ratings[] = $row['rating'];
+}
+$ratingsJSON = json_encode($ratings);
+
     // Fetch individual ratings
-    $sql = "SELECT * FROM ratings where item_id=$pid";
-    $result = $conn->query($sql);
+    $avgsql = "SELECT * FROM ratings where item_id=$pid";
+    $result = $conn->query($avgsql);
     
     // Calculate average rating
     $averageRating = 0;
@@ -187,9 +199,8 @@ foreach($results as $result)
     }
     
     if ($totalCount > 0) {
-        $averageRating /= $totalCount;
-       
-    }
+        $averageRating /= $totalCount;  
+  }
    
     // Close the connection
     $conn->close();
@@ -198,6 +209,8 @@ foreach($results as $result)
 		<div class="selectroom_top">
 			<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
 				<ul>
+        <?php if($_SESSION['login'])
+					{?>
 				<div class="rating-box">
       <div class="stars">
 	    <i class="fa-solid fa-star" data-rating="1"></i>
@@ -206,7 +219,17 @@ foreach($results as $result)
         <i class="fa-solid fa-star" data-rating="4"></i>
         <i class="fa-solid fa-star" data-rating="5"></i>
       </div>
-        </div>
+        </div><?php } else {?>
+          <a href="#" data-toggle="modal" data-target="#myModal4" >
+          <div class="rating-box">
+      <div class="stars">
+	    <i class="fa-solid fa-star" data-rating="1"></i>
+        <i class="fa-solid fa-star" data-rating="2"></i>
+        <i class="fa-solid fa-star" data-rating="3"></i>
+        <i class="fa-solid fa-star" data-rating="4"></i>
+        <i class="fa-solid fa-star" data-rating="5"></i>
+        </a>
+      </div><?php }?><br><br>
         <div><?php  echo "Average Rating: " . round($averageRating, 2);?></div>
     
 					<li class="spe">
@@ -225,7 +248,7 @@ foreach($results as $result)
 					<div class="clearfix"></div>
 				</ul>
 			</div>
-			
+              
 		</div>
 		</form>
 		<?php
@@ -255,11 +278,40 @@ foreach($results as $result)
 							<?php }}?>
 <?php }} ?>
 <script>
+
   // Use PHP to pass the value of $pid and 'login' session variable to JavaScript
   const item_id = <?php echo $pid; ?>;
   const loginSession = <?php echo json_encode($_SESSION['login']); ?>; // Properly encode the session variable
-
   const stars = document.querySelectorAll('.stars i');
+  
+  setInitialRatings();
+  function calculateAverageRating() {
+    const ratings=<?php echo $ratingsJSON; ?>;
+    console.log("here is ratings :: ", ratings)
+    if (ratings.length > 0) {
+    let sum = 0;
+    for (let i = 0; i < ratings.length; i++) {
+      sum += ratings[i];
+    }
+    return sum / ratings.length;
+  }
+  return 0; // Default to 0 if no ratings are available
+}
+
+  function setInitialRatings() {
+    const averageRating = calculateAverageRating();
+  const roundedRating = Math.round(averageRating);
+  
+    console.log("i am inside set intial ratings");
+    stars.forEach((star, index) => {
+      if (index < roundedRating) {
+        star.classList.add("active");
+      } else {
+        star.classList.remove("active");
+      }
+    });
+}
+
   stars.forEach(star => {
     star.addEventListener('click', handleRatingClick);
   });

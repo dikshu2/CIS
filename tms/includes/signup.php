@@ -60,8 +60,8 @@ error:function (){}
 										<div class="login">
 											<div class="login-left">
 												<ul>
-													<li><a class="fb" href="#"><i></i>Facebook</a></li>
-													<li><a class="goog" href="#"><i></i>Google</a></li>
+													<li><a class="fb" href="https://www.facebook.com/" target="_blank"><i></i>Facebook</a></li>
+													<li><a class="goog" href="https://www.google.com/" target="_blank"><i></i>Google</a></li>
 													
 												</ul>
 											</div>
@@ -75,12 +75,16 @@ error:function (){}
 		<input type="text" value="" placeholder="Email id" name="email" id="email" onBlur="checkAvailability()" autocomplete="off"  required="">	
 		 <span id="user-availability-status" style="font-size:12px;"></span> 
 	<input type="password" value="" placeholder="Password" name="password" required="">	
+
+	
+
+
 													<input type="submit" name="submit" id="submit" value="CREATE ACCOUNT">
 												</form>
 											</div>
 												<div class="clearfix"></div>								
 										</div>
-											<p>By logging in you agree to our <a href="page.php?type=terms">Terms and Conditions</a> and <a href="page.php?type=privacy">Privacy Policy</a></p>
+											<!-- <p>By logging in you agree to our <a href="page.php?type=terms">Terms and Conditions</a> and <a href="page.php?type=privacy">Privacy Policy</a></p> -->
 									</div>
 								</div>
 							</section>

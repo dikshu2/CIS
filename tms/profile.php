@@ -10,14 +10,16 @@ else{
 if(isset($_POST['submit6']))
 	{
 $name=$_POST['name'];
+$chatType = $_POST['chatoptions'];
 $mobileno=$_POST['mobileno'];
 $email=$_SESSION['login'];
 
-$sql="update tblusers set FullName=:name,MobileNumber=:mobileno where EmailId=:email";
+$sql="update tblusers set FullName=:name,MobileNumber=:mobileno,chat_type=:chattype where EmailId=:email";
 $query = $dbh->prepare($sql);
 $query->bindParam(':name',$name,PDO::PARAM_STR);
 $query->bindParam(':mobileno',$mobileno,PDO::PARAM_STR);
 $query->bindParam(':email',$email,PDO::PARAM_STR);
+$query->bindParam(':chattype',$chatType,PDO::PARAM_STR);
 $query->execute();
 $msg="Profile Updated Successfully";
 }
@@ -118,9 +120,16 @@ foreach($results as $result)
 
 <p style="width: 350px;">	
 <b>Reg Date :</b>
-<?php echo htmlentities($result->RegDate);?>
+<?php echo htmlentities($result->RegDate);
+$selectedValue = $result->chat_type?>
 			</p>
-<?php }} ?>
+
+			<input type="radio" value="private" name="chatoptions" id="private" <?php echo ($selectedValue == 'private') ? 'checked' : ''; ?>>
+	<label for="private">Private</label>
+	
+	<input type="radio" value="public" name="chatoptions" id="public" <?php echo ($selectedValue == 'public') ? 'checked' : ''; ?>>
+	<label for="public">Public</label>
+			<?php }} ?>
 
 			<p style="width: 350px;">
 <button type="submit" name="submit6" class="btn-primary btn">Updtae</button>

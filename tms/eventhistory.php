@@ -35,7 +35,7 @@ if($df>=0)
 {
 $status=2;
 $cancelby='u';
-$msg='Event Canclled';
+$msg=$_GET['msg'];
 $sql = "UPDATE tblevent SET status=:status,CancelledBy=:cancelby,message=:msg WHERE UserEmail=:email and EventId=:eid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
@@ -179,7 +179,7 @@ echo "Canceled by admin at " .$result->UpdationDate;
     <a href="eventhistory.php?evid=<?php echo htmlentities($result->EventId);?>" onclick="cancelEvent(event)">Cancel</a>
 
 <script>
-    function cancelEvent(event) {
+   function cancelEvent(event) {
         event.preventDefault(); // Prevent the default link behavior
 
         // Prompt the user for a message

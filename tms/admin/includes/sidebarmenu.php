@@ -8,7 +8,7 @@
 										<li><a href="dashboard.php"><i class="fa fa-tachometer"></i> <span>Dashboard</span><div class="clearfix"></div></a></li>
 										
 										
-									 <li id="menu-academico" ><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><span>Package</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
+									 <li id="menu-academico" ><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><span>Place</span> <span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
 										   <ul id="menu-academico-sub" >
 										   <li id="menu-academico-avaliacoes" ><a href="create-package.php">Create</a></li>
 											<li id="menu-academico-avaliacoes" ><a href="manage-packages.php">Manage</a></li>
@@ -27,7 +27,7 @@
 									 <li><a href="manageissues.php"><i class="fa fa-table"></i>  <span>Manage Issues</span><div class="clearfix"></div></a></li>
 									<li><a href="manage-enquires.php"><i class="fa fa-file-text-o" aria-hidden="true"></i>  <span>Manage Enquiries</span><div class="clearfix"></div></a></li>
 									<li><a href="manage-event.php"><i class="fa fa-file-text-o" aria-hidden="true"></i>  <span>Manage Event</span><div class="clearfix"></div></a></li>
-							     
+							        <li><a href="managechat.php"><i class="fa fa-file-text-o" aria-hidden="true"></i>  <span>Manage ChatGroup</span><div class="clearfix"></div></a></li>
 									
 								  </ul>
 								</div>

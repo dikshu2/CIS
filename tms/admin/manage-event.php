@@ -130,7 +130,6 @@ $msg="Event Confirm successfully";
 						  <tr>
 						  <th>Event id</th>
 							<th>UserName</th>
-							<th>User MobileNo.</th>
 							<th> User EmailId</th>
 							<th>Event Name </th>
 							<th>Event Location </th>
@@ -143,7 +142,7 @@ $msg="Event Confirm successfully";
 						  </tr>
 						</thead>
 						<tbody>
-<?php $sql = "SELECT tblevent.EventId as eventid,tblusers.FullName as fname,tblusers.MobileNumber as mnumber,tblusers.EmailId as 
+<?php $sql = "SELECT tblevent.EventId as eventid,tblusers.FullName as fname,tblusers.EmailId as 
 email,tblevent.EventName as ename,tblevent.EventLocation as elocation, tblevent.EventDetails as details, tblevent.schedule as
  schedule,tblevent.audience_capacity as capacity,tblevent.amount as amount,tblevent.status as status,tblevent.CancelledBy as cancelby,
  tblevent.UpdationDate 
@@ -159,7 +158,6 @@ foreach($results as $result)
 						  <tr>
 							<td><?php echo htmlentities($result->eventid);?></td>
 							<td><?php echo htmlentities($result->fname);?></td>
-							<td><?php echo htmlentities($result->mnumber);?></td>
 							<td><?php echo htmlentities($result->email);?></td>
 							<td><?php echo htmlentities($result->ename);?></td>
 							<td><?php echo htmlentities($result->elocation);?></td>

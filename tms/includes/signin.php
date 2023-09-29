@@ -13,7 +13,7 @@ $results=$query->fetchAll(PDO::FETCH_OBJ);
 if($query->rowCount() > 0)
 {
 $_SESSION['login']=$_POST['email'];
-echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
+echo "<script type='text/javascript'> document.location = '/tms/tms/index.php'; </script>";
 } else{
 	
 	echo "<script>alert('Invalid Details');</script>";
@@ -35,8 +35,8 @@ echo "<script type='text/javascript'> document.location = 'index.php'; </script>
 								<div class="login">
 										<div class="login-left">
 												<ul>
-													<li><a class="fb" href="#"><i></i>Facebook</a></li>
-													<li><a class="goog" href="#"><i></i>Google</a></li>
+												<li><a class="fb" href="https://www.facebook.com/" target="_blank"><i></i>Facebook</a></li>
+													<li><a class="goog" href="https://www.google.com/" target="_blank"><i></i>Google</a></li>
 													
 												</ul>
 											</div>
@@ -45,14 +45,14 @@ echo "<script type='text/javascript'> document.location = 'index.php'; </script>
 											<h3>Signin with your account </h3>
 	<input type="text" name="email" id="email" placeholder="Enter your Email"  required="">	
 	<input type="password" name="password" id="password" placeholder="Password" value="" required="">	
-											<h4><a href="forgot-password.php">Forgot password</a></h4>
+											<h4><a href="/tms/tms/forgot-password.php">Forgot password</a></h4>
 											
 											<input type="submit" name="signin" value="SIGNIN">
 										</form>
 									</div>
 									<div class="clearfix"></div>								
 								</div>
-								<p>By logging in you agree to our <a href="page.php?type=terms">Terms and Conditions</a> and <a href="page.php?type=privacy">Privacy Policy</a></p>
+								<!-- <p>By logging in you agree to our <a href="page.php?type=terms">Terms and Conditions</a> and <a href="page.php?type=privacy">Privacy Policy</a></p> -->
 							</div>
 						</div>
 					</div>

@@ -7,7 +7,7 @@ include('includes/config.php');
 <?php
  include_once 'header1.php';
 include 'location_model.php';
-//get_unconfirmed_locations();exit;
+
 ?>
 
 <?php include('includes/signup.php');?>			
@@ -126,7 +126,7 @@ input[type=submit] {
 <body>
  
 <br> <br>
-    <div class="container">
+    <!-- <div class="container">
         <form action="" id="signupForm">
             
         <label for="lat">lat</label>
@@ -137,8 +137,8 @@ input[type=submit] {
              <input type="submit" value="Submit" > 
         </form>
     </div>
-   
-    <div class="geocoder">  
+    -->
+    <div class="geocoder">   
     </div> 
     <div id="geocoder" ></div> 
 <br>
@@ -165,20 +165,14 @@ input[type=submit] {
         //  geocoder here
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
-            // limit results to Australia
-            //country: 'IN',
         });
 
         var marker ;
-
-        // After the map style has loaded on the page, add a source layer and default
-        // styling for a single point.
         map.on('load', function() {
             addMarker(user_location,'load');
             add_markers(saved_markers);
 
-            // Listen for the result event from the MapboxGeocoder that is triggered when a user
-            // makes a selection and add a symbol that matches the result.
+        
             geocoder.on('result', function(ev) {
                 alert("aaaaa");
                 console.log(ev.result.center);
@@ -231,7 +225,7 @@ input[type=submit] {
             event.preventDefault();
             var lat = $('#lat').val();
             var lng = $('#lng').val();
-            var url = 'locations_model.php?add_location&lat=' + lat + '&lng=' + lng;
+            var url = '/tms/tms/locations_model.php?add_location&lat=' + lat + '&lng=' + lng;
             $.ajax({
                 url: url,
                 method: 'GET',

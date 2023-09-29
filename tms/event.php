@@ -41,6 +41,12 @@ if ($updatedCapacity < 0 ) {
 	if($lastInsertId)
 	{
 	$msg="Booked Successfully";
+	$url = 'http://localhost/tms/tms/email.php?message=' . urlencode("Your seat has been booked. Please show this at entrance. Enjoy the show.") . '&sub=' . urlencode("Booking Confirmation!!") . '&email=' . urlencode($useremail);
+
+// Make the GET request
+$response = file_get_contents($url);
+
+// Display the response
 	}
 	else 
 	{
@@ -177,7 +183,8 @@ foreach($results as $result)
 					<?php if($_SESSION['login'])
 					{?>
 						<li class="spe" align="center">
-					<button type="submit" name="submit2" class="btn-primary btn">Book</button>
+					<button type="submit" name="submit2" class="btn-primary btn">Book</a></button>
+					
 						</li>
 						<?php } else {?>
 							<li class="sigi" align="center" style="margin-top: 1%">

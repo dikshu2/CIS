@@ -85,30 +85,42 @@ include('includes/config.php');
 <div class="container">
 	<div class="holiday">
 	<h3>Place List</h3>				
-	<?php $sql = "SELECT * from tbltourpackages order by rand() limit 4";
+	<?php
+
+
+// Fetch places and their ratings
+$sql = "SELECT p.*, AVG(r.rating) AS average_rating
+        FROM tbltourpackages p
+        LEFT JOIN ratings r ON p.PackageId = r.item_id
+        GROUP BY p.PackageId
+        ORDER BY average_rating DESC"; 
 $query = $dbh->prepare($sql);
 $query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{	?>
-			<div class="rom-btm">
-				<div class="col-md-3 room-left wow fadeInLeft animated" data-wow-delay=".5s">
-				<img src="admin/pacakgeimages/<?php echo htmlentities($result->PackageImage);?>" class="img-responsive" alt="">
-				</div>
-				<div class="col-md-6 room-midle wow fadeInUp animated" data-wow-delay=".5s">
-					<h4>Name: <?php echo htmlentities($result->PackageName);?></h4>
-					<p><b>Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>
-				</div>
-				<div class="col-md-3 room-right wow fadeInRight animated" data-wow-delay=".5s">
-					<a href="package-details.php?pkgid=<?php echo htmlentities($result->PackageId);?>" class="view">Details</a>
-				</div>
-				<div class="clearfix"></div>
-			</div>
+$results = $query->fetchAll(PDO::FETCH_OBJ);
 
-<?php }} ?>
+if ($query->rowCount() > 0) {
+    foreach ($results as $result) {
+        // Display place information here, including the calculated average rating
+        ?>
+        <div class="rom-btm">
+            <!-- Place information including average rating -->
+            <div class="col-md-3 room-left wow fadeInLeft animated" data-wow-delay=".5s">
+                <img src="admin/pacakgeimages/<?php echo htmlentities($result->PackageImage);?>" class="img-responsive" alt="">
+            </div>
+            <div class="col-md-6 room-midle wow fadeInUp animated" data-wow-delay=".5s">
+                <h4>Name: <?php echo htmlentities($result->PackageName);?></h4>
+                <p><b>Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>
+                <p><b>Average Rating :</b> <?php echo round($result->average_rating, 2);?></p>
+            </div>
+            <div class="col-md-3 room-right wow fadeInRight animated" data-wow-delay=".5s">
+                <a href="package-details.php?pkgid=<?php echo htmlentities($result->PackageId);?>" class="view">Details</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <?php
+    }
+}
+?>
 			
 		
 <div><a href="category-list.php" class="view">View More</a></div>

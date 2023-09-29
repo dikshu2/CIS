@@ -113,7 +113,7 @@ $error="Something went wrong. Please try again";
 								<div class="form-group">
 									<label for="focusedinput" class="col-sm-2 control-label">Name</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control1" name="packagename" id="packagename" placeholder="Create" required>
+										<input type="text" class="form-control1" name="packagename" id="packagename" placeholder="Place Name" required>
 									</div>
 								</div>
 

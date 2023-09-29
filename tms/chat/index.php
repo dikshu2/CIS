@@ -1,7 +1,7 @@
 <?php
 include("configuration.php");
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 
 
 // if(!isset($_SESSION['login']))
@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 // 	header("location:index.php");
 // }
 $email=$_SESSION['login'];
-$sql=mysqli_query($al,"SELECT * FROM tblusers WHERE EmailId='$email'");
+$sql=mysqli_query($dbh,"SELECT * FROM tblusers WHERE EmailId='$email'");
 $b=mysqli_fetch_array($sql);
 $name=$b['FullName'];
 ?>

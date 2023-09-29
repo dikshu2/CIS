@@ -3,57 +3,23 @@
 if($_SESSION['login'])
 {?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
 
-.notification-badge {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    background-color: red;
-    color: white;
-    padding: 2px;
-    width: 16px; /* Adjust the width */
-    height: 16px; /* Adjust the height */
-    border-radius: 50%;
-    font-size: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-</style>
 <div class="top-header">
 	<div class="container">
 		<ul class="tp-hd-lft wow fadeInLeft animated" data-wow-delay=".5s">
 			<li class="hm"><a href="/tms/tms/index.html"><i class="fa fa-home"></i></a></li>
 			<li class="prnt"><a href="/tms/tms/profile.php">My Profile</a></li>
 				<li class="prnt"><a href="/tms/tms/change-password.php">Change Password</a></li>
-			<li class="prnt"><a href="/tms/tms/eventhistory.php">My Event History</a></li>
-			<li class="prnt"><a href="/tms/tms/tour-history.php">My Booking History</a></li>
+			<li class="prnt"><a href="/tms/tms/eventhistory.php">Event History</a></li>
+			<li class="prnt"><a href="/tms/tms/tour-history.php">Booking History</a></li>
 			<li class="prnt"><a href="/tms/tms/customereventhistory.php">User registered details</a></li>
-			<li class="prnt"><a href="/tms/tms/issuetickets.php">Issue Tickets</a></li>
+			<li class="prnt"><a href="/tms/tms/issuetickets.php">Issue</a></li>
+			<li class="prnt"><a href="/tms/tms/chatgroup_history.php">ChatGroup</a></li>
 			<button id="notification-button" style="background-color: #3F84B1; border: none; height:2px;">
-    <a href="notification.php">
+    <a href="/tms/tms/notification.php">
         <i class="fas fa-bell"></i>
-		
-        <?php
-        $uemail = $_SESSION['login'];
-	
-		$sqlUnseenCount = "SELECT COUNT(*) AS unseen_count FROM notification WHERE UserEmail = :uemail AND seen = 0";
-		$queryUnseenCount = $dbh->prepare($sqlUnseenCount);
-		$queryUnseenCount->bindParam(':uemail', $uemail, PDO::PARAM_STR);
-		$queryUnseenCount->execute();
-		$unseenCountRow = $queryUnseenCount->fetch(PDO::FETCH_ASSOC);
-		$unseenCount = $unseenCountRow['unseen_count'];
-        if ($unseenCount > 0) { ?>
-            <span class="notification-badge"><?php echo $unseenCount; ?></span>
-        <?php } ?>
     </a>
-</button>
-
-	
-			
+</button>	
 		</ul>
 		<ul class="tp-hd-rgt wow fadeInRight animated" data-wow-delay=".5s"> 
 			<li class="tol">Welcome :</li>				
@@ -66,8 +32,8 @@ if($_SESSION['login'])
 <div class="top-header">
 	<div class="container">
 		<ul class="tp-hd-lft wow fadeInLeft animated" data-wow-delay=".5s">
-			<li class="hm"><a href="index.php"><i class="fa fa-home"></i></a></li>
-				<li class="hm"><a href="admin/index.php">Admin Login</a></li>
+			<li class="hm"><a href="/tms/tms/index.php"><i class="fa fa-home"></i></a></li>
+				<li class="hm"><a href="/tms/tms/admin/index.php">Admin Login</a></li>
 		</ul>
 		<ul class="tp-hd-rgt wow fadeInRight animated" data-wow-delay=".5s"> 
 			<li class="tol">Toll Number : 123-4568790</li>				
@@ -83,7 +49,7 @@ if($_SESSION['login'])
 <div class="header">
 	<div class="container">
 		<div class="logo wow fadeInDown animated" data-wow-delay=".5s">
-			<a href="index.php">City <span> Information System</span></a>	
+			<a href="/tms/tms/index.php">City <span> Information System</span></a>	
 		</div>
 	
 		<div class="lock fadeInDown animated" data-wow-delay=".5s"> 
@@ -121,14 +87,14 @@ if($_SESSION['login'])
 								<li><a href="/tms/tms/event.php">Event</a></li>
 								<li><a href="/tms/tms/category-list.php">Category</a></li>
 								
-								<li><a href="/tms/tms/user1.php">Map</a></li>
+								<li><a href="/tms/tms/map.php">Map</a></li>
 								<li><a href="/tms/tms/about.php">About Us</a></li>
 								<!-- <li><a href="page.php?type=contact">Contact Us</a></li> -->
 								<?php if($_SESSION['login'])
 {?>
 								<li>Need Help?<a href="#" data-toggle="modal" data-target="#myModal3"> / Write Us </a>  </li>
 								<?php } else { ?>
-								<li><a href="tms/tms/enquiry.php"> Enquiry </a>  </li>
+								<li><a href="/tms/tms/enquiry.php"> Enquiry </a>  </li>
 								<?php } ?>
 								<li>
                                 

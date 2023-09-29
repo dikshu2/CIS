@@ -8,16 +8,17 @@ if(strlen($_SESSION['login'])==0)
 header('location:index.php');
 }else{
 	
-		$uemail = $_SESSION['login'];
-	
-		$sqlUnseenCount = "SELECT COUNT(*) AS unseen_count FROM notification WHERE UserEmail = :uemail AND seen = 0";
-		$queryUnseenCount = $dbh->prepare($sqlUnseenCount);
-		$queryUnseenCount->bindParam(':uemail', $uemail, PDO::PARAM_STR);
-		$queryUnseenCount->execute();
-		$unseenCountRow = $queryUnseenCount->fetch(PDO::FETCH_ASSOC);
-		$unseenCount = $unseenCountRow['unseen_count'];
+	$email = $_SESSION['login'];
+
+	$sqlUnseenCount = "SELECT COUNT(*) AS unseen_count FROM notification WHERE UserEmail = :email AND seen = 0";
+	$queryUnseenCount = $dbh->prepare($sqlUnseenCount);
+	$queryUnseenCount->bindParam(':email', $email, PDO::PARAM_STR);
+	$queryUnseenCount->execute();
+	$unseenCountRow = $queryUnseenCount->fetch(PDO::FETCH_ASSOC);
+	$unseenCount = $unseenCountRow['unseen_count'];
 	
 }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -63,6 +64,18 @@ header('location:index.php');
 .center-text {
     text-align: center;
   }
+
+  .notification-badge {
+        background-color: red; /* Customize the badge color */
+        color: white; /* Customize the text color */
+        border-radius: 50%; /* Create a circular badge */
+        padding: 5px 10px; /* Adjust padding to fit the content */
+        font-size: 12px; /* Customize font size */
+        position: relative;
+        top: -20px; /* Adjust the top value to position the badge */
+        left: 5px; /* Adjust the left value to position the badge */
+        z-index: 1; /* Ensure the badge appears on top of the notification text */
+    }
 		</style>
 </head>
 <body>
@@ -78,7 +91,11 @@ header('location:index.php');
 <!--- privacy ---->
 <div class="privacy">
 	<div class="container">
-		<h3 class="wow fadeInDown animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInDown;">Notification</h3>
+		<h3 class="wow fadeInDown animated animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInDown;">Notification
+		<?php if ($unseenCount > 0) { ?>
+		<span class="notification-badge"><?php echo $unseenCount; ?></span>
+	<?php }?>
+	</h3>
 		<form name="chngpwd" method="post" onSubmit="return valid();">
 		 <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
@@ -86,7 +103,9 @@ header('location:index.php');
 	<table border="1" width="100%">
 <tr align="center" >
                             <th style="text-align: center;">#</th>
-                            <th style="text-align: center;">Notification</th>
+                            <th style="text-align: center;">Notification
+						
+						</th>
 							<th> </th>
 </tr>
 <?php 
@@ -122,6 +141,8 @@ foreach($results as $result)
 		
 	</div>
 </div>
+
+
 <!--- /privacy ---->
 <!--- footer-top ---->
 <!--- /footer-top ---->

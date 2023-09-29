@@ -11,7 +11,7 @@ if(isset($_REQUEST['evid']))
 	{
 $eid=intval($_GET['evid']);
 $email=$_SESSION['login'];
-$sql ="SELECT RegDate FROM tbleventbooking WHERE UserEmail=:email and Id=:eid";
+$sql ="SELECT EventId, Seat, RegDate FROM tbleventbooking WHERE UserEmail=:email and Id=:eid";
 $query= $dbh -> prepare($sql);
 $query-> bindParam(':email', $email, PDO::PARAM_STR);
 $query-> bindParam(':eid', $eid, PDO::PARAM_STR);
@@ -42,6 +42,15 @@ $query-> bindParam(':email',$email, PDO::PARAM_STR);
 $query-> bindParam(':eid',$eid, PDO::PARAM_STR);
 $query -> execute();
 
+   // Add one seat back to the event's audience capacity
+   $eventId = $result->EventId;
+   $updatedSeat = $result->Seat; // Assuming you're adding one seat back
+   // Update tblevent to increase the Seat count
+   $updateEventSql = "UPDATE tblevent SET audience_capacity=:updatedSeat WHERE EventId=:eventId";
+   $updateEventQuery = $dbh->prepare($updateEventSql);
+   $updateEventQuery->bindParam(':updatedSeat', $updatedSeat, PDO::PARAM_INT);
+   $updateEventQuery->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+   $updateEventQuery->execute();
 $msg="Event Cancelled successfully";
 }
 else
