@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
 	{	
@@ -36,15 +36,11 @@ $query-> bindParam(':evid',$evid, PDO::PARAM_STR);
 $query -> execute();
 $msg="Group Confirm successfully";
 }
-
-
-
-
 	?>
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>TMS | Admin manage Bookings</title>
+<title>TMS | Admin Manage ChatGroup</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -116,7 +112,7 @@ $msg="Group Confirm successfully";
 				</div>
 <!--heder end here-->
 <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a><i class="fa fa-angle-right"></i>Manage Event</li>
+                <li class="breadcrumb-item"><a href="index.html">Home</a><i class="fa fa-angle-right"></i>Manage ChatGroup</li>
             </ol>
 <div class="agile-grids">	
 				<!-- tables -->
@@ -124,11 +120,11 @@ $msg="Group Confirm successfully";
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
 				<div class="agile-tables">
 					<div class="w3l-table-info">
-					  <h2>Manage </h2>
+					  <h2>Manage ChatGroup</h2>
 					    <table id="table">
 						<thead>
 						  <tr>
-						  <th> id</th>
+						  <th> Id</th>
 							<th>UserName</th>
 							<th> User EmailId</th>
 							<th>Mobile No.</th>
@@ -184,7 +180,7 @@ echo "Canceled by User at " .$result->upddate;
 <?php } else if($result->status==1){
 	?><td> Confirmed </td>
 <?php }else {?>
-<td><a href="managechat.php?evid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to cancel booking')" >Cancel</a> / <a href="managechat.php?evtid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Booking has been confirm')" >Confirm</a></td>
+<td><a href="managechat.php?evid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to cancel group?')" >Cancel</a> / <a href="managechat.php?evtid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Group has been confirm.')" >Confirm</a></td>
 <?php }?>
 
 						  </tr>
@@ -211,9 +207,9 @@ if ($query->rowCount() > 0) {
         
         $notificationMessage = "";
         if ($result->status == 1) {
-            $notificationMessage = 'Your Event has been confirmed by admin';
+            $notificationMessage = 'Your group has been confirmed by admin';
         } elseif ($result->status == 2) {
-            $notificationMessage = 'Your Event has been canceled by admin';
+            $notificationMessage = 'Your group has been canceled by admin';
         }
         
        // Create and execute the insertion statement

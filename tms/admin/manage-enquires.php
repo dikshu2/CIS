@@ -117,7 +117,6 @@ $msg="Enquiry  successfully read";
 						  <th>Id</th>
 							<th>Name</th>
 							<th>Mobile No./ Email</th>
-							
 							<th>Subject </th>
 							<th>Description </th>
 							<th>Posting date </th>

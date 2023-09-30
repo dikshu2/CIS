@@ -4,7 +4,7 @@ include('configuration.php');
 
 if (isset($_GET['user_id'])) {
     $user_id = $_GET['user_id'];
-
+echo $user_id;
     // Construct the SQL query to delete the user from chat_people
     $sql = "DELETE FROM chat_people WHERE Id = :user_id";
 

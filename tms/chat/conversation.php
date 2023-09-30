@@ -39,6 +39,11 @@ ob_end_flush();
  background-position: center center;
  background-repeat: no-repeat;
 }
+.msg {
+  font-family: "Segoe UI";
+  font-size: 14px;
+  color: black;
+}
 </style>
 </head>
 
@@ -63,7 +68,7 @@ ob_end_flush();
   <option value="<?php echo $v['EmailId'];?>"><?php echo $v['FullName'];?></option>
   <?php } ?>
 </select></td></tr>
-<tr><td class="labels" style="color: #34ad00;">Message : </td><td><textarea name="msg" id="msg" class="fields" rows="2" cols="30" required="required"></textarea></td></tr>
+<tr><td class="labels" style="color: #34ad00;">Message : </td><td><textarea name="msg" id="msg" class="fields" rows="2" cols="30" style="color: black;" required="required"></textarea></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" value="SEND" class="commandButton" style="color: #34ad00;" /></td></tr>
 </table>
 </form>
@@ -73,7 +78,7 @@ ob_end_flush();
 $r=mysqli_query($dbh,"SELECT * FROM message WHERE receiver='$email' ORDER BY id DESC");
 ?>
 <table cellpadding="4" cellspacing="4" class="table">
-<tr><td class="tableHead" align="center" colspan="2" style="text-decoration:underline; color: #34ad00;">Inbox</td></tr>
+<tr><td class="tableHead" align="center" colspan="2" style="text-decoration:underline; color: #34ad00; color:black">Inbox</td></tr>
 <?php while($t=mysqli_fetch_array($r))
 {
 	$ee=$t['sender'];
@@ -81,9 +86,9 @@ $r=mysqli_query($dbh,"SELECT * FROM message WHERE receiver='$email' ORDER BY id 
 	$p=mysqli_fetch_array($o);
 	$recv=$p['FullName'];
 	?>
-<tr><td class="msg" style="font-size:12px;"><?php echo $t['msg'];?>
-<span style="color:#F39;"> ( From <?php echo $recv;?> on <?php echo $t['date'];?>)</span>
-</td><td><a href="deleteMessage.php?del=<?php echo $t['id'];?>" style="font-size:12px; color: #34ad00;">Delete</a></td></tr>
+<tr><td class="msg" style="font-size:12px; color:black"><?php echo $t['msg'];?>
+<span style="color:#F39; color:black"> ( From <?php echo $recv;?> on <?php echo $t['date'];?>)</span>
+</td><td><a href="deleteMessage.php?del=<?php echo $t['id'];?>" style="font-size:12px; color: #34ad00; color:black">Delete</a></td></tr>
 <?php } ?>
 
 

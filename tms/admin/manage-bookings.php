@@ -20,7 +20,7 @@ $query -> bindParam(':cancelby',$cancelby , PDO::PARAM_STR);
 $query-> bindParam(':bid',$bid, PDO::PARAM_STR);
 $query -> execute();
 
-$msg="Booking Cancelled successfully";
+$msg="Comment Cancelled successfully";
 }
 
 
@@ -34,12 +34,8 @@ $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query-> bindParam(':bcid',$bcid, PDO::PARAM_STR);
 $query -> execute();
-$msg="Booking Confirm successfully";
+$msg="Comment Confirm successfully";
 }
-
-
-
-
 	?>
 <!DOCTYPE HTML>
 <html>
@@ -197,7 +193,7 @@ echo "Canceled by User at " .$result->upddate;
 <?php } else if($result->status==1){
 	?><td> Confirmed </td>
 <?php }else {?>
-<td><a href="manage-bookings.php?bkid=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Do you really want to cancel comment?')" >Cancel</a> / <a href="manage-bookings.php?bckid=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Booking has been confirm')" >Confirm</a></td>
+<td><a href="manage-bookings.php?bkid=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Do you really want to cancel comment?')" >Cancel</a> / <a href="manage-bookings.php?bckid=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Comment has been confirm')" >Confirm</a></td>
 <?php }?>
 
 						  </tr>

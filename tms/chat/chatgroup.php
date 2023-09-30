@@ -33,7 +33,11 @@ body{
  background-image:url(../images/temple.jpg); 
 background-color: #FAF9F6;
 
-
+}
+.msg {
+  font-family: "Segoe UI";
+  font-size: 14px;
+  color: black;
 }
 </style>
 </head>

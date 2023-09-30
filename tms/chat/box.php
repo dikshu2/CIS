@@ -2,9 +2,12 @@
 include("configuration.php");
 session_start();
 error_reporting(0);
+if(!isset($_SESSION['login']))
+{
+	header("location:index.php");
+}
 if(isset($_POST['submit']))
 {
-
 $useremail=$_SESSION['login'];
 $groupname=$_POST['groupid'];	
 $sql="INSERT INTO chat_people(UserEmail,ChatGroup) VALUES(:useremail,:group)";

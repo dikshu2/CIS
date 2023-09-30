@@ -130,7 +130,7 @@ $msg="Event Confirm successfully";
 						  <tr>
 						  <th>Event id</th>
 							<th>UserName</th>
-							<th> User EmailId</th>
+							<th>User EmailId</th>
 							<th>Event Name </th>
 							<th>Event Location </th>
 							<th>Event Details</th>
@@ -190,7 +190,7 @@ echo "Canceled by User at " .$result->upddate;
 <?php } else if($result->status==1){
 	?><td> Confirmed </td>
 <?php }else {?>
-<td><a href="manage-event.php?evid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Do you really want to cancel booking')" >Cancel</a> / <a href="manage-event.php?evtid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Booking has been confirm')" >Confirm</a></td>
+<td><a href="manage-event.php?evid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Do you really want to cancel Event?')" >Cancel</a> / <a href="manage-event.php?evtid=<?php echo htmlentities($result->eventid);?>" onclick="return confirm('Event has been confirm')" >Confirm</a></td>
 <?php }?>
 
 						  </tr>
